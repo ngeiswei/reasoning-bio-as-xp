@@ -5,13 +5,14 @@
 ;; these to help reason about biology.
 
 ;; Parameters
-;; (define ms 10)                       ; Minimum support
-(define mf 0.01)                        ; Minimum frequency
-(define mi 10)                         ; Maximum number of iterations
+(define rs 0)                           ; Random seed
+(define ss 0.05)                         ; Subsampled portion of the KBs
+(define ms 2)                           ; Minimum support (ignored if mf is positive)
+(define mf -1)                          ; Minimum frequency (ignored if negative)
+(define mi 1000)                          ; Maximum number of iterations
 (define mc 4)                           ; Maximum number of conjunctions
 (define mv 3)                           ; Maximum number of variables
 (define su 'nisurp)                       ; Surprisingness measure
-(define rs 0)                           ; Random seed
 
 ;; Define initial pattern. Look for SMP and GO classes that have
 ;; surprisingly common genes.
@@ -26,25 +27,6 @@
                (Inheritance (Variable "$SMP") (Concept "SMP_term"))
                (Inheritance (Variable "$GO") (Concept "GO_term")))))
 
-;; (define ip (Lambda
-;;              (VariableSet
-;;                (Variable "$Gene")
-;;                (Variable "$SMP"))
-;;              (Present
-;;                (Member (Variable "$Gene") (Variable "$SMP"))
-;;                (Member (Variable "$Gene") (ConceptNode "GO:0002161"))
-;;                (Inheritance (Variable "$SMP") (Concept "SMP_term"))
-;;                (Inheritance (ConceptNode "GO:0002161") (Concept "GO_term")))))
-
-;; (define ip (Lambda
-;;              (VariableSet
-;;                (Variable "$Gene"))
-;;              (Present
-;;                (Member (Variable "$Gene") (ConceptNode "SMP0000055"))
-;;                (Member (Variable "$Gene") (ConceptNode "GO:0002161"))
-;;                (Inheritance (ConceptNode "SMP0000055") (Concept "SMP_term"))
-;;                (Inheritance (ConceptNode "GO:0002161") (Concept "GO_term")))))
-
 ;; Load modules & utils
 (use-modules (srfi srfi-1))
 (use-modules (opencog randgen))
@@ -57,17 +39,20 @@
 ;; Set random seed
 (cog-randgen-set-seed! rs)
 
+;; Parameters string
+(define param-str (string-append "-rs=" (number->string rs)
+                                 "-ss=" (number->string ss)
+                                 (if (< 0 mf)
+                                     (string-append "-mf=" (number->string mf))
+                                     (string-append "-ms=" (number->string ms)))
+                                 "-mi=" (number->string mi)
+                                 "-mc=" (number->string mc)
+                                 "-mv=" (number->string mv)
+                                 "-su=" (symbol->string su)
+                                 "-ip=" (number->hexstr (cog-handle ip))))
+
 ;; Set loggers
-(define log-filename (string-append
-                      "opencog"
-                      "-rs=" (number->string rs)
-                      "-mf=" (number->string mf)
-                      "-mi=" (number->string mi)
-                      "-mc=" (number->string mc)
-                      "-mv=" (number->string mv)
-                      "-su=" (symbol->string su)
-                      "-ip=" (number->hexstr (cog-handle ip))
-                      ".log"))
+(define log-filename (string-append "opencog" param-str ".log"))
 
 ;; (cog-logger-set-timestamp! #f)
 ;; (cog-logger-set-sync! #t)
@@ -79,7 +64,8 @@
 (ure-logger-set-filename! log-filename)
 
 ;; Load preprocessed KBs, get the list of trees to mine
-(define db-lst (load-kbs "kbs/smpdb_gene.scm"
+(define db-lst (load-kbs ss
+                         "kbs/smpdb_gene.scm"
                          "kbs/GO.scm"
                          "kbs/GO_annotation.scm"))
 
@@ -91,6 +77,7 @@
 
 ;; Call pattern miner
 (define results (cog-mine db-lst
+                          #:minimum-support ms
                           #:minimum-frequency mf
                           #:maximum-iterations mi
                           #:conjunction-expansion #f
@@ -99,3 +86,9 @@
                           #:maximum-spcial-conjuncts 4
                           #:surprisingness su
                           #:initial-pattern ip))
+
+(cog-logger-debug "Final results:\n~a" results)
+
+;; Write results in a file
+(define miner-results-filename (string-append "miner-results" param-str ".scm"))
+(write-atoms-to-file miner-results-filename results)
