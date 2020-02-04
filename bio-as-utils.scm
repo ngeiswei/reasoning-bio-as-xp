@@ -2,7 +2,6 @@
 
 ;; Load modules
 (use-modules (srfi srfi-1))
-(use-modules (opencog miner))
 (use-modules (opencog logger))
 
 ;; Helpers

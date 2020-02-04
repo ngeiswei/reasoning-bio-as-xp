@@ -1,10 +1,42 @@
-How does gene FKH1 impact longevity in supercentenarians?
+1. How does gene FKH1 impact longevity in supercentenarians?
 
-How do genes FKH1 and TOR interact in the context of longevity?
+****** Ben's feedback ******
 
-What are TOR's closest relationships to DNA repair?
+If the conceptual query is “How does FKH1 impact
+longevity” then we are looking for
 
-What are TOR's closest relationships to DNA repair, in the longevity
-context?
+Implication (SNP in gene FKH1) Longevity
 
-How do apoptosis and DNA repair interact, in the longevity context?
+(where both of these are predicates that take argument Person) but we
+are interested in the inference histories as much as the conclusion
+truth valueIdeally we would like to find stuff like
+
+Implication (SNP in gene FKH1) Pred_i
+
+Implication Pred_i Longevity
+
+for various Pred_i that are not too complicated.  Further
+decomposition like
+
+Implication (SNP in gene FKH1) Pred_i
+
+Implication Pred_i Pred_j
+Implication Pred_j Longevity
+
+may also be interesting.  The Pred_i will involve GO categories, gene
+names, pathway names etc. combined in various ways. If the conceptual
+query is “How do FKH1 and FOX0 together impact longevity” then it’s
+the same but starting from
+
+Implication (SNP in gene FKH1 AND SNP in gene FOX0) Longevity
+
+****************************
+
+2. How do genes FKH1 and TOR interact in the context of longevity?
+
+3. What are TOR's closest relationships to DNA repair?
+
+4. What are TOR's closest relationships to DNA repair, in the
+   longevity context?
+
+5. How do apoptosis and DNA repair interact, in the longevity context?

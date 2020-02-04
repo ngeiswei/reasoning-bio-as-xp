@@ -66,6 +66,6 @@
 
 (write-atoms-to-file "inheritance-links.scm" all-inhs-tv)
 
-;; get strengths
+;; Get strengths (useful for looking at their distribution, see
+;; histogram-inheritance-strengths.gp)
 (define strengths (map cog-mean all-inhs-tv))
-
