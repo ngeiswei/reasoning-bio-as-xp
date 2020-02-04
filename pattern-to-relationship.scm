@@ -6,7 +6,7 @@
 (define ss 1)                         ; Subsampled portion of the KBs
 
 ;; Filename containing the mined patterns
-(define mp-filename "sofia-server-xp/miner-results-all.scm")
+(define mp-filename "results/miner-results-all.scm")
 
 ;; Load modules & utils
 (use-modules (srfi srfi-1))
