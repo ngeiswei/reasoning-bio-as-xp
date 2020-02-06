@@ -44,7 +44,7 @@
 
 ;; Load patterns
 (define pattern-evaluations
-  (load-pattern-evaluations "sofia-server-xp/miner-results-all.scm"))
+  (load-pattern-evaluations mp-filename))
 
 ;; Extract GO and SMP concept pairs from the pattern evaluations
 (define cps (map extract-GO-SMP-pair pattern-evaluations))
