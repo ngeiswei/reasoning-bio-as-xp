@@ -97,7 +97,7 @@ Note obviously that all implications here are extensional, not mixed.
 It's a tricky question, I would suggest both, keeping in mind that
 such TVs, although technically correct, do not mean that such
 implication links can be used to predict the outcome of new instances
-o(i) with the level of confidence implied by their counts.  That is
+`o(i)` with the level of confidence implied by their counts.  That is
 because the prior probabilities of such implication links must be
 taken into account.  To correctly predict one needs to consider a
 large ensemble of models to ultimately approach a form of Solomonoff
@@ -107,7 +107,7 @@ likely can be understood within the framework of Solomonoff induction.
 
 ## Examples
 
-Let be a model M
+Let be a model `M`
 
 ```
 Or
@@ -115,7 +115,7 @@ Or
   Predicate "p2"
 ```
 
-and a dataset of 3 instances i1 to i3
+and a dataset of 3 instances `i1` to `i3`
 
 ```
 +-----+-----+-----+-----+-----+
