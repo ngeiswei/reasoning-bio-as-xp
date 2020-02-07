@@ -5,6 +5,7 @@
 ;; these to help reason about biology.
 
 ;; Parameters
+(define jb 4)                           ; Number of jobs for the task
 (define rs 0)                           ; Random seed
 (define ss 0.05)                         ; Subsampled portion of the KBs
 (define ms 2)                           ; Minimum support (ignored if mf is positive)
@@ -40,7 +41,8 @@
 (cog-randgen-set-seed! rs)
 
 ;; Parameters string
-(define param-str (string-append "-rs=" (number->string rs)
+(define param-str (string-append "-jb=" (number->string jb)
+                                 "-rs=" (number->string rs)
                                  "-ss=" (number->string ss)
                                  (if (< 0 mf)
                                      (string-append "-mf=" (number->string mf))
@@ -77,6 +79,7 @@
 
 ;; Call pattern miner
 (define results (cog-mine db-lst
+                          #:jobs jb
                           #:minimum-support ms
                           #:minimum-frequency mf
                           #:maximum-iterations mi
