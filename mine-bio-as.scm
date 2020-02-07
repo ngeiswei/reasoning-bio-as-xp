@@ -52,7 +52,7 @@
                                  "-ip=" (number->hexstr (cog-handle ip))))
 
 ;; Set loggers
-(define log-filename (string-append "opencog" param-str ".log"))
+(define log-filename (string-append "mine-bio-as" param-str ".log"))
 
 ;; (cog-logger-set-timestamp! #f)
 ;; (cog-logger-set-sync! #t)
@@ -90,5 +90,5 @@
 (cog-logger-debug "Final results:\n~a" results)
 
 ;; Write results in a file
-(define miner-results-filename (string-append "miner-results" param-str ".scm"))
+(define miner-results-filename (string-append "mine-bio-as-results" param-str ".scm"))
 (write-atoms-to-file miner-results-filename results)
