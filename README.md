@@ -52,7 +52,7 @@ guile --no-auto-compile -l mine-bio-as.scm
 should output a scheme file
 
 ```
-miner-results-<PARAMETERS>.scm
+results/miner-results-<PARAMETERS>.scm
 ```
 
 containing mined patterns.
@@ -67,7 +67,7 @@ loads a file containing mined pattern (see previous step), and
 produces a file
 
 ```
-inheritance-links.scm
+results/inheritance-links.scm
 ```
 
 containing inheritance relationships gotten by applying PLN to
@@ -81,6 +81,18 @@ guile --no-auto-compile -l pln-bio-as.scm
 
 will load the bio-as datasets, as well as `inheritance-links.scm`
 generated above and apply PLN on the whole thing.
+
+#### Preprocess KBs
+
+```bash
+guile --no-auto-compile -l preprocess-kbs.scm
+```
+
+#### Run 2015 PLN with intensional reasoning
+
+```bash
+guile --no-auto-compile -l 2015-pln-inference.scm
+```
 
 ## Related work
 
