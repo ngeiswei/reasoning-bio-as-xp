@@ -32,10 +32,10 @@
 (ure-logger-set-filename! log-filename)
 
 ;; Load kbs
-(define db-lst (load-kbs ss
-                         "kbs/GO.scm"
-                         "kbs/GO_annotation.scm"
-                         "kbs/2015-completion.scm"))
+(define db-lst (load-kbs (list "kbs/GO.scm"
+                               "kbs/GO_annotation.scm"
+                               "kbs/2015-completion.scm")
+                         #:subsmp ss))
 
 ;; Load PLN
 (pln-load #:rule-base 'empty)

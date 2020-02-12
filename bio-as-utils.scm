@@ -5,6 +5,8 @@
 (use-modules (opencog logger))
 
 ;; Helpers
+(define (const-false? x) #f)
+
 (define (scope? x)
   (cog-subtype? 'ScopeLink (cog-type x)))
 
@@ -47,11 +49,22 @@
   (and (eq? (cog-type A) 'ConceptNode)
        (string-starts-with? (cog-name A) "GO:")))
 
+(define (GO_term? A)
+  (and (eq? (cog-type A) 'ConceptNode)
+       (equal? (cog-name A) "GO_term")))
+
+(define (inheritance-GO_term? A)
+  (and (eq? (cog-type A) 'InheritanceLink)
+       (GO_term? (gdr A))))
+
 (define (get-smps)
   (filter smp? (cog-get-atoms 'ConceptNode)))
 
 (define (number->hexstr n)
   (format #f "~x" n))
+
+(define (bool->string b)
+  (if b "t" "f"))
 
 (define (get-pattern eval-pattern)
   (cog-outgoing-atom (gdr eval-pattern) 0))
@@ -65,7 +78,7 @@
       (cog-outgoing-set body)
       body))
 
-(define (load-filter pred? filename)
+(define (load-filter-in pred? filename)
 "
   1. Load filename in an auxiliaury atomspace
   2. Grab all atoms
@@ -88,11 +101,17 @@
          (dummy (cog-pop-atomspace)))
     base-atoms))
 
-(define (load-kb subsmp kb-filename)
+(define* (load-kb kb-filename
+                  #:key
+                  (subsmp 1)
+                  (filter-out const-false?))
 "
   1. Load the given dataset.
   2. Remove useless atoms for mining.
   3. Add useful atoms (such as SMP classes)
+
+  An option predicate argument to filter out atoms satisfying that
+  predicate.
 "
   (let* (;; Define filter for admissible atoms
          (rand-selected? (lambda (x) (<= (cog-randgen-randfloat) subsmp)))
@@ -104,11 +123,18 @@
                                     (not (lst? x))
                                     (not (and? x))
                                     (not (present? x))
-                                    (not (eval-GO_namespace? x))))))
-    (load-filter admissible? kb-filename)))
+                                    (not (eval-GO_namespace? x))
+                                    (not (filter-out x))))))
+    (load-filter-in admissible? kb-filename)))
 
-(define (load-kbs subsmp . kbs-filenames)
-  (concatenate (map (lambda (x) (load-kb subsmp x)) kbs-filenames)))
+(define* (load-kbs kbs-filenames
+                   #:key
+                   (subsmp 1)
+                   (filter-out const-false?))
+  (concatenate (map (lambda (x) (load-kb x
+                                         #:subsmp subsmp
+                                         #:filter-out filter-out))
+                    kbs-filenames)))
 
 (define (add-extra-kb)
   ;; Small Molecule Pathway concept
@@ -146,7 +172,7 @@
                                    (pos-mean? x)
                                    (surp-eval? x)
                                    (member-clauses? x)))))
-    (load-filter admissible? filename)))
+    (load-filter-in admissible? filename)))
 
 (define (extract-GO-SMP-pair pattern-eval)
   (let* ((body (get-body (get-pattern pattern-eval)))
