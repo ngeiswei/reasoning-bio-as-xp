@@ -29,6 +29,9 @@
 (define (member? x)
   (cog-subtype? 'MemberLink (cog-type x)))
 
+(define (subset? x)
+  (cog-subtype? 'SubsetLink (cog-type x)))
+
 ;; TODO: better use scheme basename function
 (define (rm-extension fn ext)
   (if (string-suffix? (string-append "." ext) fn)
@@ -59,6 +62,36 @@
 
 (define (get-smps)
   (filter smp? (cog-get-atoms 'ConceptNode)))
+
+(define (get-genes)
+  (cog-get-atoms 'GeneNode))
+
+(define (get-go-categories)
+  (filter go? (cog-get-atoms 'ConceptNode)))
+
+(define (go-subset? S)
+  (and (subset? S) (go? (gar S)) (go? (gdr S))))
+
+(define (get-go-subsets)
+  (filter go-subset? (cog-get-atoms 'SubsetLink)))
+
+(define (get-members C)
+"
+  Given a concept node C, return all its members
+"
+  (let* ((member-links (cog-filter 'MemberLink (cog-incoming-set C)))
+         (member-of-C (lambda (x) (equal? C (gdr x))))
+         (members (map gar (filter member-of-C member-links))))
+    members))
+
+(define (get-cardinality C)
+"
+  Giveb a concept node C, return its number of members
+"
+  (length (get-members C)))
+
+(define (count->confidence count) (exact->inexact (/ count (+ count 800))))
+(define (confidence->count conf) (exact->inexact (/ (* conf 800) (- 1 conf))))
 
 (define (number->hexstr n)
   (format #f "~x" n))
@@ -179,3 +212,53 @@
          (clauses (get-clauses body))
          (cpts (map gdr clauses)))
     cpts))
+
+(define (true-subset-inverse S)
+"
+  Given a subset with a true value
+
+  Subset (stv 1 1)
+    A <ATV>
+    B <BTV>
+
+  Return
+
+  Subset <TV>
+    B <BTV>
+    A <ATV>
+
+  where TV is calculated as follows
+
+  TV.strength = (ATV.strength * ATV.count) / (BTV.strength * BTV.count)
+  TV.count = (BTV.strength * BTV.count)
+
+  Which is technically correct since (Subset A B) is true.
+"
+(let* ((A (gar S))
+       (B (gdr S))
+       (ATV (cog-tv A))
+       (BTV (cog-tv B))
+       (A-positive-count (* (cog-tv-mean ATV) (cog-tv-count ATV)))
+       (B-positive-count (* (cog-tv-mean BTV) (cog-tv-count BTV)))
+       (TV-strength (if (< 0 B-positive-count)
+                        (exact->inexact (/ A-positive-count B-positive-count))
+                        1))
+       (TV-count B-positive-count)
+       (TV-confidence (count->confidence TV-count))
+       (TV (stv TV-strength TV-confidence)))
+  (Subset TV B A)))
+
+(define (gt-zero-confidence? A)
+"
+  Return #t iff A's confidence is greater than 0
+"
+  (> (cog-confidence A) 0))
+
+(define (gt-zero-mean? A)
+"
+  Return #t iff A's mean is greater than 0
+"
+  (> (cog-mean A) 0))
+
+(define (gt-zero-mean-and-confidence? A)
+  (and (gt-zero-confidence? A) (gt-zero-mean? A)))

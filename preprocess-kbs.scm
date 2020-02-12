@@ -57,7 +57,7 @@
 ;; Parameters
 (define rs 0)                           ; Random seed
 (define ss 1)                         ; Subsampled portion of the KBs
-(define mi 20)                      ; Maximum number of iterations
+(define mi 12)                      ; Maximum number of iterations
 (define cp 10)                           ; Complexity penalty
 (define fra #t)                          ; Whether rules are fully applied
 
@@ -112,6 +112,7 @@
 (pln-load-from-path "rules/translation.scm")
 (pln-load-from-path "rules/transitivity.scm")
 (pln-add-rule-by-name "present-inheritance-to-subset-translation-rule")
+(pln-add-rule-by-name "present-subset-transitivity-rule")
 (pln-add-rule-by-name "present-mixed-member-subset-transitivity-rule")
 
 ;; Run forward chainer
@@ -129,17 +130,24 @@
 (define results-lst-with-tvs
   (map (lambda (x) (cog-set-tv! x (stv 1 1))) (cog-outgoing-set results)))
 
-;; Run FC to
-;;
-;; 5. Calculate TVs to all GO categories
+;; 5. Calculate TVs of all GO categories
+(define genes (get-genes))
+(define go-categories (get-go-categories))
+(define usize (length genes))           ; universe size
+(define (concept-mean x) (exact->inexact (/ (get-cardinality x) usize)))
+(define (concept-tv x) (stv (concept-mean x) (count->confidence usize)))
+(define go-categories-with-tvs
+  (map (lambda (x) (cog-set-tv! x (concept-tv x))) go-categories))
+
 ;; 6. Infer inverse subset links, based on inversion
-
-;; Reload PLN with a different rule set
-(pln-rm-all-rules)
-
-;; TODO
+(define go-subsets (get-go-subsets))
+(define inversed-go-subsets (map true-subset-inverse go-subsets))
+(define inversed-go-subsets-with-pos-tvs
+  (filter gt-zero-mean-and-confidence? inversed-go-subsets))
 
 ;; Write results in file
+(define all-results (append go-categories-with-tvs
+                            results-lst-with-tvs
+                            inversed-go-subsets-with-pos-tvs))
 (define scm-filename (string-append "results/preprocess-kbs" param-str ".scm"))
-(write-atoms-to-file scm-filename results-lst-with-tvs)
-
+(write-atoms-to-file scm-filename all-results)
