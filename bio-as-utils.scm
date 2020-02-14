@@ -2,6 +2,7 @@
 
 ;; Load modules
 (use-modules (srfi srfi-1))
+(use-modules (opencog ure))
 (use-modules (opencog logger))
 
 ;; Helpers
@@ -80,8 +81,8 @@
   Given a concept node C, return all its members
 "
   (let* ((member-links (cog-filter 'MemberLink (cog-incoming-set C)))
-         (member-of-C (lambda (x) (equal? C (gdr x))))
-         (members (map gar (filter member-of-C member-links))))
+         (member-of-C? (lambda (x) (equal? C (gdr x))))
+         (members (map gar (filter member-of-C? member-links))))
     members))
 
 (define (get-cardinality C)
@@ -89,9 +90,6 @@
   Giveb a concept node C, return its number of members
 "
   (length (get-members C)))
-
-(define (count->confidence count) (exact->inexact (/ count (+ count 800))))
-(define (confidence->count conf) (exact->inexact (/ (* conf 800) (- 1 conf))))
 
 (define (number->hexstr n)
   (format #f "~x" n))
