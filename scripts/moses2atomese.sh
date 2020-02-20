@@ -178,9 +178,10 @@ moses2atomese() {
     local tv_strength=$2
     local tv_conf=$3
 
-    links=$(echo $model_str | sed -e 's/or(/(OrLink /g' \
-                                  -e 's/and(/(AndLink /g' \
-                                  -e 's/\(\$X[._ATCGh{0-9}]\+\)/(PredicateNode \"\1\")/g')
+    links=$(echo $model_str | \
+        sed -e 's/or(/(OrLink /g' \
+            -e 's/and(/(AndLink /g' \
+            -e 's/\([\$XMT{0-9}]\+[.:]\+[0-9]\+_[ATCG][.\/][ATCG][_h]*\)/(PredicateNode \"\1\")/g')
 
     # Seems easier to handle the NotLinks separately after the above
     links=$(echo $links | sed -e 's/!\([^)]*\)/(NotLink \1)/g')
