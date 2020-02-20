@@ -479,8 +479,8 @@ do
     # to the names of the genes
     if [[ ! -z $FEATURE_GENE_MAP ]]
     then
-        # The format is, e.g. $X1.1666251_G.A
-        for feature in $(echo $model | grep -o "\$X[._ATCGh0-9]\+")
+        # The format is, e.g. $X1.1666251_G.A, 22:35683238_T/C, MT:14071_A/G ... etc
+        for feature in $(echo $model | grep -o "[\$XMT0-9]\+[.:]\+[0-9]\+\_[ATCG][.\/][ATCG][_h]*")
         do
             # Some pre-processing to make sure the format is consistant with the
             # feature-gene mapping that we got from the file, here it tries to
