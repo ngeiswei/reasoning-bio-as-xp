@@ -32,8 +32,7 @@ ContextLink < Epqr / Elmn, Epqr / (Epqr + 800) >
     ListLink
       ConceptNode "tissue Tq" < Slq / Slm, Slq / (Slq + 800) >
       ; ie fraction of Tq in all samples
-      GeneNode "gene Gr" < 1 / Gn, Gn / (Gn + 800) >
-      ; this could be weighted by Emr / Emn ?
+      GeneNode "gene Gr" < Emr / Emn, Gn / (Gn + 800) >
 ```
 ## discussion
 
