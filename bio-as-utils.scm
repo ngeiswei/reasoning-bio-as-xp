@@ -109,6 +109,12 @@
       (cog-outgoing-set body)
       body))
 
+(define (mk-rand-selector prob)
+"
+  Return a random selector that is true with the given probability
+"
+  (lambda (x) (<= (cog-randgen-randfloat) prob)))
+
 (define (load-filter-in pred? filename)
 "
   1. Load filename in an auxiliaury atomspace
@@ -145,7 +151,7 @@
   predicate.
 "
   (let* (;; Define filter for admissible atoms
-         (rand-selected? (lambda (x) (<= (cog-randgen-randfloat) subsmp)))
+         (rand-selected? (mk-rand-selector subsmp))
          (eval-GO_namespace? (lambda (x) (eval-pred-name? "GO_namespace" x)))
          (admissible? (lambda (x) (and
                                     (rand-selected? x)
