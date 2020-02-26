@@ -1,19 +1,33 @@
 ****** Ben's examples *****
 
-Simple initial inferences, not needing expression data: e.g. Variant v1 and variant V2 imply longevity; v1 pertains to gene G1 and V2 pertains to gene G2; G1 is in GO category GO7 and G2 is in Go category GO9 ;  GO7 intersects a lot with GO15 and GO9 intersects a lot with GO22; GO15 and Go22 are known to imply longevity.
+Simple initial inferences, not needing expression data: e.g. Variant
+v1 and variant V2 imply longevity; v1 pertains to gene G1 and V2
+pertains to gene G2; G1 is in GO category GO7 and G2 is in Go category
+GO9 ; GO7 intersects a lot with GO15 and GO9 intersects a lot with
+GO22; GO15 and Go22 are known to imply longevity.
 
 (or more complex inference paths along these lines)
 
-Among the crudities here are that we have to use links btw GO categories that are based on generic counting rather than expression in relevant contexts; and that we’re not looking at whether the variants v1 and v2 affect longevity via causing over or under expression in G1 and G2.
+Among the crudities here are that we have to use links btw GO
+categories that are based on generic counting rather than expression
+in relevant contexts; and that we’re not looking at whether the
+variants v1 and v2 affect longevity via causing over or under
+expression in G1 and G2.
 
 What can be done afterwards using expression data is…
 
-We can insert knowledge about whether variant v1 tends to cause over or under expression in G1, etc.
+We can insert knowledge about whether variant v1 tends to cause over
+or under expression in G1, etc.
 
-We can then insert knowledge of the form “In lung tissue, in people age 50 or over, overexpression of G1 tends to cause overexpression of G15”
+We can then insert knowledge of the form “In lung tissue, in people
+age 50 or over, overexpression of G1 tends to cause overexpression of
+G15”
 
-and also knowledge like “overexpression of G15 tends to cause longevity”
+and also knowledge like “overexpression of G15 tends to cause
+longevity”
 
-( we can also weight GO categories and inheritance/similarity links btw them based on expression data, leading to contextual probabilities which will be more useful)
+(we can also weight GO categories and inheritance/similarity links btw
+them based on expression data, leading to contextual probabilities
+which will be more useful)
 
 *****************************
