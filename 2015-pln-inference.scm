@@ -73,14 +73,6 @@
                             #:maximum-iterations mi
                             #:complexity-penalty cp))
 
-;; ;; Run forward chainer
-;; (define vardecl (VariableSet (TypedVariable X ConceptT)))
-;; (define source X)
-;; (define results (pln-fc source
-;;                         #:vardecl vardecl
-;;                         #:maximum-iterations mi
-;;                         #:complexity-penalty cp))
-
 ;; All results
 (define results (append (cog-outgoing-set results-ats)
                         (cog-outgoing-set results-iis)))
