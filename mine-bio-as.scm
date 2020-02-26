@@ -5,11 +5,11 @@
 ;; these to help reason about biology.
 
 ;; Parameters
-(define jb 4)                           ; Number of jobs for the task
+(define jb 1)                           ; Number of jobs for the task
 (define rs 0)                           ; Random seed
-(define ss 0.05)                         ; Subsampled portion of the KBs
-(define ms 2)                           ; Minimum support (ignored if mf is positive)
-(define mf -1)                          ; Minimum frequency (ignored if negative)
+(define ss 1)                         ; Subsampled portion of the KBs
+(define ms 100)                           ; Minimum support (ignored if mf is positive)
+(define mf 0.01)                          ; Minimum frequency (ignored if negative)
 (define mi 1000)                          ; Maximum number of iterations
 (define mc 4)                           ; Maximum number of conjunctions
 (define mv 3)                           ; Maximum number of variables
@@ -54,7 +54,7 @@
                                  "-ip=" (number->hexstr (cog-handle ip))))
 
 ;; Set loggers
-(define log-filename (string-append "mine-bio-as" param-str ".log"))
+(define log-filename (string-append "log/mine-bio-as" param-str ".log"))
 
 ;; (cog-logger-set-timestamp! #f)
 ;; (cog-logger-set-sync! #t)
@@ -93,5 +93,5 @@
 (cog-logger-debug "Final results:\n~a" results)
 
 ;; Write results in a file
-(define miner-results-filename (string-append "mine-bio-as-results" param-str ".scm"))
+(define miner-results-filename (string-append "results/mine-bio-as-results" param-str ".scm"))
 (write-atoms-to-file miner-results-filename results)
