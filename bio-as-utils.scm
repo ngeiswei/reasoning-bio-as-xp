@@ -170,8 +170,11 @@
 (define (add-extra-kb)
   ;; Small Molecule Pathway concept
   (let* ((smps (get-smps))
-         (smp-cpt (Concept "SMP_term")))
-    (map (lambda (x) (Inheritance x smp-cpt)) smps)))
+         (smp-cpt (Concept "SMP_term"))
+         (gos (get-go-categories))
+         (go-cpt (Concept "GO_term")))
+    (append (map (lambda (x) (Inheritance x smp-cpt)) smps)
+            (map (lambda (x) (Inheritance x go-cpt)) gos))))
 
 (define (write-atoms-to-file filename a-lst)
 "
