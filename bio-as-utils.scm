@@ -6,7 +6,7 @@
 (use-modules (opencog logger))
 
 ;; Helpers
-(define (const-false? x) #f)
+(define (fixed-false? x) #f)
 
 (define (scope? x)
   (cog-subtype? 'ScopeLink (cog-type x)))
@@ -85,6 +85,12 @@
          (members (map gar (filter member-of-C? member-links))))
     members))
 
+(define (get-member-links EL-TYPE C-TYPE)
+  (let* ((mbr-links (cog-get-atoms 'MemberLink #f))
+         (valid-types? (lambda (x) (and (equal? (cog-type (gar x)) EL-TYPE)
+                                        (equal? (cog-type (gdr x)) C-TYPE)))))
+    (filter valid-types? mbr-links)))
+
 (define (get-cardinality C)
 "
   Giveb a concept node C, return its number of members
@@ -141,7 +147,7 @@
 (define* (load-kb kb-filename
                   #:key
                   (subsmp 1)
-                  (filter-out const-false?))
+                  (filter-out fixed-false?))
 "
   1. Load the given dataset.
   2. Remove useless atoms for mining.
@@ -167,7 +173,7 @@
 (define* (load-kbs kbs-filenames
                    #:key
                    (subsmp 1)
-                   (filter-out const-false?))
+                   (filter-out fixed-false?))
   (concatenate (map (lambda (x) (load-kb x
                                          #:subsmp subsmp
                                          #:filter-out filter-out))

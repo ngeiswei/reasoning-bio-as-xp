@@ -53,6 +53,16 @@
 ;; Subset A B
 ;; |-
 ;; Subset B A
+;;
+;; 7. Infer all attraction links, with their TVs
+;;
+;; Attraction
+;;   <GO-category-A>
+;;   <GO-category-A>
+;;
+;; The reason attraction links are pre-inferred is because in order to
+;; carry out intensional reasoning attraction links must be fully
+;; populated.
 
 ;; Parameters
 (define rs 0)                           ; Random seed
@@ -77,7 +87,7 @@
                    "-cp=" (number->string cp)
                    "-fra=" (bool->string fra)))
 
-(define log-filename (string-append "preprocess-kbs" param-str ".log"))
+(define log-filename (string-append "log/preprocess-kbs" param-str ".log"))
 
 ;; (cog-logger-set-timestamp! #f)
 ;; (cog-logger-set-sync! #t)
@@ -120,15 +130,20 @@
                   (TypedVariable X ConceptT)
                   (TypedVariable Y ConceptT)))
 (define source (Inheritance X Y))
-(define results (pln-fc source
-                        #:vardecl vardecl
-                        #:maximum-iterations mi
-                        #:complexity-penalty cp
-                        #:fc-full-rule-application fra))
+(define results-mbrs (pln-fc source
+                             #:vardecl vardecl
+                             #:maximum-iterations mi
+                             #:complexity-penalty cp
+                             #:fc-full-rule-application fra))
+
+;; Get old + newly inferred members
+(define all-mbrs
+  (append (cog-outgoing-set results-mbrs)
+          (get-member-links 'GeneNode 'ConceptNode)))
 
 ;; Add true TVs to all results (3. and 4.)
 (define results-lst-with-tvs
-  (map (lambda (x) (cog-set-tv! x (stv 1 1))) (cog-outgoing-set results)))
+  (map (lambda (x) (cog-set-tv! x (stv 1 1))) all-mbrs))
 
 ;; 5. Calculate TVs of all GO categories
 (define genes (get-genes))
@@ -145,9 +160,26 @@
 (define inversed-go-subsets-with-pos-tvs
   (filter gt-zero-mean-and-confidence? inversed-go-subsets))
 
+;; 7. Infer all attraction links, with their TVs
+
+;; Add required PLN rules
+(pln-add-rule-by-name "subset-condition-negation-rule")
+(pln-add-rule-by-name "subset-attraction-introduction-rule")
+
+;; Run backward chainer to produce attraction links.
+(define vardecl (VariableSet
+                  (TypedVariable X ConceptT)
+                  (TypedVariable Y ConceptT)))
+(define target (Attraction X Y))
+(define results-ats (pln-bc target
+                            #:vardecl vardecl
+                            #:maximum-iterations mi
+                            #:complexity-penalty cp))
+
 ;; Write results in file
 (define all-results (append go-categories-with-tvs
                             results-lst-with-tvs
-                            inversed-go-subsets-with-pos-tvs))
+                            inversed-go-subsets-with-pos-tvs
+                            (cog-outgoing-set results-ats)))
 (define scm-filename (string-append "results/preprocess-kbs" param-str ".scm"))
 (write-atoms-to-file scm-filename all-results)

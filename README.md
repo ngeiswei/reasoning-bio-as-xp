@@ -5,7 +5,7 @@
 1. Install the following projects
 
 ```
-cogutil atomspace ure miner agi-bio
+cogutil atomspace ure miner pln agi-bio
 ```
 
 from the OpenCog github organization
@@ -14,7 +14,9 @@ from the OpenCog github organization
 https://github.com/opencog
 ```
 
-To do that, for each project do as follows:
+To do that, for projects `cogutil`, `ure`, `miner` and `agi-bio` use
+the master branches of the opencog repositories. That is type the
+following:
 
 ```bash
 git clone https://github.com/opencog/<PROJECT>.git
@@ -26,6 +28,26 @@ make -j4
 sudo make install
 sudo ldconfig /usr/local/lib/opencog
 ```
+
+For `atomspace` use the branch `bio-as-xp` from `ngeiswei`
+account. That is type the following:
+
+```
+git clone https://github.com/ngeiswei/pln.git
+cd pln
+git checkout bio-as-xp
+```
+
+then compile and install as usual.
+
+For `pln` use the branch `fix-pln-api` from `ngeiswei` account. That
+is type the following:
+
+```
+git@github.com:ngeiswei/pln.git
+```
+
+then compile and install as usual.
 
 ## Usage
 
@@ -73,22 +95,45 @@ results/inheritance-links.scm
 containing inheritance relationships gotten by applying PLN to
 surprising patterns.
 
-#### Run PLN over the datasets
-
-```bash
-guile --no-auto-compile -l pln-bio-as.scm
-```
-
-will load the bio-as datasets, as well as `inheritance-links.scm`
-generated above and apply PLN on the whole thing.
-
 #### Preprocess KBs
 
 ```bash
 guile --no-auto-compile -l preprocess-kbs.scm
 ```
 
+which should create
+
+```
+results/preprocess-kbs-<PARAMETERS>.scm
+```
+
+#### Simple intensional reasoning example
+
+```bash
+guile --no-auto-compile -l intensional-reasoning-test.scm
+```
+
+which should create
+
+```
+results/intentional-reasoning-test-<PARAMETERS>.scm
+```
+
+### Simple PLN reasoning example
+
+```bash
+guile --no-auto-compile -l simple-pln-inference.scm
+```
+
+which should create
+
+```
+results/simple-pln-inference-<PARAMETERS>.scm
+```
+
 #### Run 2015 PLN with intensional reasoning
+
+Warning: not working yet
 
 ```bash
 guile --no-auto-compile -l 2015-pln-inference.scm
