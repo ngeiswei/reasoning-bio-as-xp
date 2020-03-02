@@ -45,8 +45,8 @@
 
 ;; TODO
 (define (similar-genes-relating-to-aging conclusion . premises)
-  (cog-logger-debug "similar-genes-relating-to-aging conclusion=~a premises=~a"
-                    conclusion premises)
+  ;; (cog-logger-debug "similar-genes-relating-to-aging conclusion=~a premises=~a"
+  ;;                   conclusion premises)
   (if (= (length premises) 2)
       (cog-merge-hi-conf-tv! conclusion (stv 0.55 0.55))))
 

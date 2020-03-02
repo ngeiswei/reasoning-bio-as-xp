@@ -37,8 +37,8 @@
           (Member F B))))))
 
 (define (transfer-intensional-similarity-to-member conclusion . premises)
-  (cog-logger-debug "transfer-intensional-similarity-to-member conclusion=~a . premises=~a"
-                    conclusion premises)
+  ;; (cog-logger-debug "transfer-intensional-similarity-to-member conclusion=~a . premises=~a"
+  ;;                   conclusion premises)
   (if (= (length premises) 3)
       (cog-merge-hi-conf-tv! conclusion (cog-tv (car premises)))))
 
