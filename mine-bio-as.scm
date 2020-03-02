@@ -11,7 +11,7 @@
 (define ms 100)                           ; Minimum support (ignored if mf is positive)
 (define mf 0.01)                          ; Minimum frequency (ignored if negative)
 (define mi 1000)                          ; Maximum number of iterations
-(define mc 4)                           ; Maximum number of conjunctions
+(define mc 4)                           ; Maximum number of conjuncts
 (define mv 3)                           ; Maximum number of variables
 (define su 'nisurp)                       ; Surprisingness measure
 
