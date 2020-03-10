@@ -4,9 +4,21 @@
 (use-modules (srfi srfi-1))
 (use-modules (opencog ure))
 (use-modules (opencog logger))
+(use-modules (opencog bioscience))
 
 ;; Helpers
 (define (fixed-false? x) #f)
+
+(define (null-mean? x)
+  (and (cog-atom? x) (< (cog-mean x) 1e-16)))
+
+(define (non-null-mean? x)
+  (and (cog-atom? x) (< 1e-16 (cog-mean x))))
+
+;; Whether all nodes of the given link have non null mean
+(define (all-nodes-non-null-mean? LINK)
+  (let* ((nodes (cog-get-all-nodes LINK)))
+    (every non-null-mean? nodes)))
 
 (define (scope? x)
   (cog-subtype? 'ScopeLink (cog-type x)))
@@ -52,6 +64,9 @@
 (define (go? A)
   (and (eq? (cog-type A) 'ConceptNode)
        (string-starts-with? (cog-name A) "GO:")))
+
+(define (gene? A)
+  (and (eq? (cog-type A) 'GeneNode)))
 
 (define (GO_term? A)
   (and (eq? (cog-type A) 'ConceptNode)
@@ -130,18 +145,17 @@
   5. Return the list of the copied atoms
 "
   (let* (;; Load file in a temporary atomspace
-         (base-as (cog-push-atomspace))
+         (base-as (cog-set-atomspace! (cog-new-atomspace)))
          (dummy (load filename))
 
          ;; Filter in atoms satisfying pred
-         (tmp-as (cog-atomspace))
          (atoms (filter pred? (cog-get-atoms 'Atom #t)))
 
          ;; Copy admissible atoms in the base atomspace
          (base-atoms (cog-cp base-as atoms))
 
          ;; Discard the temporary atomspace
-         (dummy (cog-pop-atomspace)))
+         (dummy (cog-set-atomspace! base-as)))
     base-atoms))
 
 (define* (load-kb kb-filename
@@ -275,3 +289,120 @@
 
 (define (gt-zero-mean-and-confidence? A)
   (and (gt-zero-confidence? A) (gt-zero-mean? A)))
+
+;; Trace querying utilities
+;;
+;; TODO: move to URE
+
+;; Print the inference steps leading to this target
+
+(define (get-direct-steps-to-target target)
+"
+  Return all inference steps directly inferring the given target, in
+  the following format:
+
+  (Set
+    (List <rule-1> <source-1> <iteration-1>)
+    ...
+    (List <rule-n> <source-n> <iteration-n>))
+"
+  (let* ((pattern (Execution
+                    (Variable "$rule")
+                    (List
+                      (Variable "$source")
+                      (Variable "$iteration"))
+                    target))
+         (vardecl (VariableList
+                    (TypedVariable (Variable "$rule") (Type 'DefinedSchemaNode))
+                    (Variable "$source")
+                    (TypedVariable (Variable "$iteration") (Type 'NumberNode))))
+         (gl (Get vardecl pattern)))
+    (cog-execute! gl)))
+
+(define (get-direct-steps-from-source source)
+"
+  Return all inference steps directly inferred from the give source, in
+  the following format:
+
+  (Set
+    (List <rule-1> <target-1> <iteration-1> )
+    ...
+    (List <rule-n> <target-n> <iteration-n>))
+"
+  (let* ((pattern (Execution
+                    (Variable "$rule")
+                    (List
+                      source
+                      (Variable "$iteration"))
+                    (Variable "$target")))
+         (vardecl (VariableList
+                    (TypedVariable (Variable "$rule") (Type 'DefinedSchemaNode))
+                    (Variable "$target")
+                    (TypedVariable (Variable "$iteration") (Type 'NumberNode))))
+         (gl (Get vardecl pattern)))
+    (cog-execute! gl)))
+
+(cog-logger-set-stdout! #t)
+(cog-logger-set-sync! #t)
+
+(define (get-trails-to-target target)
+"
+  Return all inference trails leading to the given target, in the
+  following format:
+
+  (Set
+    (List
+      (List <rule-11> <inter-11> <iteration-11>)
+      ...
+      (List <rule-1m> <inter-1m> <iteration-1m>))
+    ...
+    (List
+      (List <rule-n1> <inter-n1> <iteration-n1>)
+      ...
+      (List <rule-nm> <inter-nm> <iteration-nm>)))
+"
+  (let* ((direct-steps (get-direct-steps-to-target target))
+         ;; Given a direct inference step, find the trails going to
+         ;; that inference step, and append the inference step to them
+         (get-trails (lambda (s)
+                       (cog-outgoing-set (get-trails-to-target (gdr s)))))
+         (append-step-to-trail (lambda (t s)
+                                 (List (cog-outgoing-set t) s)))
+         (append-step-to-trails (lambda (ts s)
+                                  (if (null? ts)
+                                      (List s)
+                                      (map (lambda (t) (append-step-to-trail t s)) ts))))
+         (get-trails-with-direct-step (lambda (s)
+                                        (let* ((ts (get-trails s)))
+                                          (append-step-to-trails ts s)))))
+    (Set (map get-trails-with-direct-step (cog-outgoing-set direct-steps)))))
+
+(define (get-trails-from-source source)
+"
+  Return all inference trails coming from the given source, in the
+  following format:
+
+  (Set
+    (List
+      (List <rule-11> <inter-11> <iteration-11>)
+      ...
+      (List <rule-1m> <inter-1m> <iteration-1m>))
+    ...
+    (List
+      (List <rule-n1> <inter-n1> <iteration-n1>)
+      ...
+      (List <rule-nm> <inter-nm> <iteration-nm>)))
+"
+  (let* ((direct-steps (get-direct-steps-from-source source))
+         ;; Given a direct inference step, find the trails going to
+         ;; that inference step, and append the inference step to them
+         (get-trails (lambda (s) (cog-outgoing-set (get-trails-from-source (gdr s)))))
+         (prepend-step-to-trail (lambda (t s) (List s (cog-outgoing-set t))))
+         (prepend-step-to-trails (lambda (ts s)
+                                   (if (null? ts)
+                                       (List s)
+                                       (map (lambda (t) (prepend-step-to-trail t s)) ts))))
+         (get-trails-with-direct-step (lambda (s)
+                                        (let* ((ts (get-trails s)))
+                                          (prepend-step-to-trails ts s)))))
+    (Set (map get-trails-with-direct-step (cog-outgoing-set direct-steps)))))
