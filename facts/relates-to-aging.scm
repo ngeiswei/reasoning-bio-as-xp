@@ -113,9 +113,10 @@
   (Predicate "relates-to-aging")
   (Concept "GO:0034652"))
 
-(Evaluation (stv 0.9 0.9)
-  (Predicate "relates-to-aging")
-  (Concept "GO:0061434"))
+;; This GO concept has no gene
+;; (Evaluation (stv 0.9 0.9)
+;;   (Predicate "relates-to-aging")
+;;   (Concept "GO:0061434"))
 
 (Evaluation (stv 0.9 0.9)
   (Predicate "relates-to-aging")
