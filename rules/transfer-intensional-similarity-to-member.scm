@@ -33,13 +33,14 @@
           (IntensionalSimilarity E F)
           ;; Premises
           (IntensionalSimilarity A B)
-          (Member E A)
-          (Member F B))))))
+          (Set                          ; Wrap in set because the order does not matter
+            (Member E A)
+            (Member F B)))))))
 
 (define (transfer-intensional-similarity-to-member conclusion . premises)
   ;; (cog-logger-debug "transfer-intensional-similarity-to-member conclusion=~a . premises=~a"
   ;;                   conclusion premises)
-  (if (= (length premises) 3)
+  (if (= (length premises) 2)
       (cog-merge-hi-conf-tv! conclusion (cog-tv (car premises)))))
 
 (define transfer-intensional-similarity-to-member-rule-name

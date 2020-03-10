@@ -17,7 +17,13 @@
          (C (Variable "$C"))
          (E (Variable "$E")))
     (Bind
-      (VariableSet C E)
+      (VariableSet
+        (TypedVariable
+          C
+          (Type 'ConceptNode))
+        (TypedVariable
+          E
+          (Type 'GeneNode)))
       (Present
         (Evaluation relates-to-aging C)
         (Member E C))
