@@ -176,10 +176,20 @@
                             #:maximum-iterations mi
                             #:complexity-penalty cp))
 
+;; 8. Filter out relationships involving GO concepts with null mean
+(define non-null-go-categories-with-tvs
+  (filter non-null-mean? go-categories-with-tvs))
+(define non-null-results-lst-with-tvs
+  (filter all-nodes-non-null-mean? results-lst-with-tvs))
+(define non-null-inversed-go-subsets-with-pos-tvs
+  (filter all-nodes-non-null-mean? inversed-go-subsets-with-pos-tvs))
+(define non-null-attractions
+  (filter all-nodes-non-null-mean? (cog-outgoing-set results-ats)))
+
 ;; Write results in file
-(define all-results (append go-categories-with-tvs
-                            results-lst-with-tvs
-                            inversed-go-subsets-with-pos-tvs
-                            (cog-outgoing-set results-ats)))
+(define all-results (append non-null-go-categories-with-tvs
+                            non-null-results-lst-with-tvs
+                            non-null-inversed-go-subsets-with-pos-tvs
+                            non-null-attractions))
 (define scm-filename (string-append "results/preprocess-kbs" param-str ".scm"))
 (write-atoms-to-file scm-filename all-results)
