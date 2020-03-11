@@ -74,7 +74,7 @@ guile --no-auto-compile -l mine-bio-as.scm
 should output a scheme file
 
 ```
-results/miner-results-<PARAMETERS>.scm
+results/miner-bio-as-results-<PARAMETERS>.scm
 ```
 
 containing mined patterns.
