@@ -52,10 +52,12 @@
       fn))
 
 (define (string-starts-with? str prefix)
-  (let* ((start 0)
-         (end (string-length prefix))
-         (str-prefix (substring str start end)))
-    (equal? str-prefix prefix)))
+  (if (< (string-length str) (string-length prefix))
+    #f
+    (let* ((start 0)
+           (end (string-length prefix))
+           (str-prefix (substring str start end)))
+      (equal? str-prefix prefix))))
 
 (define (smp? A)
   (and (eq? (cog-type A) 'ConceptNode)
