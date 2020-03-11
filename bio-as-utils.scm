@@ -348,7 +348,7 @@
          (gl (Get vardecl pattern)))
     (cog-execute! gl)))
 
-(define (get-trails-to-target target)
+(define (get-trails-to-target-rec target . inners)
 "
   Return all inference trails leading to the given target, in the
   following format:
@@ -364,11 +364,17 @@
       ...
       (List <rule-nm> <inter-nm> <iteration-nm>)))
 "
-  (let* ((direct-steps (get-direct-steps-to-target target))
+  (let* ((get-inner (lambda (s) (gdr s))) ; Get the inner target of a step
+         (direct-steps (get-direct-steps-to-target target))
+         ;; Remove cycles
+         (inners? (lambda (s) (member (get-inner s) inners)))
+         (not-inners? (lambda (s) (not (inners? s))))
+         (direct-steps-no-cycles (filter not-inners? (cog-outgoing-set direct-steps)))
          ;; Given a direct inference step, find the trails going to
          ;; that inference step, and append the inference step to them
          (get-trails (lambda (s)
-                       (cog-outgoing-set (get-trails-to-target (gdr s)))))
+                       (let* ((inrs (if (inners? s) inners (cons (get-inner s) inners))))
+                         (cog-outgoing-set (apply get-trails-to-target-rec (cons (get-inner s) inrs))))))
          (append-step-to-trail (lambda (t s)
                                  (List (cog-outgoing-set t) s)))
          (append-step-to-trails (lambda (ts s)
@@ -378,9 +384,12 @@
          (get-trails-with-direct-step (lambda (s)
                                         (let* ((ts (get-trails s)))
                                           (append-step-to-trails ts s)))))
-    (Set (map get-trails-with-direct-step (cog-outgoing-set direct-steps)))))
+    (Set (map get-trails-with-direct-step direct-steps-no-cycles))))
 
-(define (get-trails-from-source source)
+(define (get-trails-to-target target)
+  (get-trails-to-target-rec target target))
+
+(define (get-trails-from-source-rec source . inners)
 "
   Return all inference trails coming from the given source, in the
   following format:
@@ -396,10 +405,17 @@
       ...
       (List <rule-nm> <inter-nm> <iteration-nm>)))
 "
-  (let* ((direct-steps (get-direct-steps-from-source source))
+  (let* ((get-inner (lambda (s) (gdr s))) ; Get the inner target of a step
+         (direct-steps (get-direct-steps-from-source source))
+         ;; Remove cycles
+         (inners? (lambda (s) (member (get-inner s) inners)))
+         (not-inners? (lambda (s) (not (inners? s))))
+         (direct-steps-no-cycles (filter not-inners? (cog-outgoing-set direct-steps)))
          ;; Given a direct inference step, find the trails going to
          ;; that inference step, and append the inference step to them
-         (get-trails (lambda (s) (cog-outgoing-set (get-trails-from-source (gdr s)))))
+         (get-trails (lambda (s)
+                       (let* ((inrs (if (inners? s) inners (cons (get-inner s) inners))))
+                         (cog-outgoing-set (apply get-trails-from-source-rec (cons (get-inner s) inrs))))))
          (prepend-step-to-trail (lambda (t s) (List s (cog-outgoing-set t))))
          (prepend-step-to-trails (lambda (ts s)
                                    (if (null? ts)
@@ -408,4 +424,7 @@
          (get-trails-with-direct-step (lambda (s)
                                         (let* ((ts (get-trails s)))
                                           (prepend-step-to-trails ts s)))))
-    (Set (map get-trails-with-direct-step (cog-outgoing-set direct-steps)))))
+    (Set (map get-trails-with-direct-step direct-steps-no-cycles))))
+
+(define (get-trails-from-source source)
+  (get-trails-from-source-rec source source))
