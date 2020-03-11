@@ -6,6 +6,10 @@
 (use-modules (opencog logger))
 (use-modules (opencog bioscience))
 
+;; For debugging
+;; (cog-logger-set-stdout! #t)
+;; (cog-logger-set-sync! #t)
+
 ;; Helpers
 (define (fixed-false? x) #f)
 
@@ -343,9 +347,6 @@
                     (TypedVariable (Variable "$iteration") (Type 'NumberNode))))
          (gl (Get vardecl pattern)))
     (cog-execute! gl)))
-
-(cog-logger-set-stdout! #t)
-(cog-logger-set-sync! #t)
 
 (define (get-trails-to-target target)
 "
