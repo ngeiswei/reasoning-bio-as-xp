@@ -2,17 +2,19 @@
 ;; intensionally similar to g, then h relates to again too.
 ;;
 ;; Evaluation
-;;   Predicate "relates-to-aging"
+;;   <pred>
 ;;   G
 ;; IntensionalSimilarity
 ;;   G
 ;;   H
 ;; |-
 ;; Evaluation
-;;   Predicate "relates-to-aging"
+;;   <pred>
 ;;   H
+;;
+;; where <pred> can be any predicate expressing relation to aging.
 
-(define similar-genes-relating-to-aging-rule
+(define (gen-similar-genes-relating-to-aging-rule pred)
   (Bind
     (VariableSet
       (TypedVariable
@@ -23,7 +25,7 @@
         (Type 'GeneNode)))
     (Present
       (Evaluation
-        (Predicate "relates-to-aging")
+        pred
         (Variable "$g"))
       (IntensionalSimilarity
         (Variable "$g")
@@ -33,11 +35,11 @@
       (List
         ;; Conclusion
         (Evaluation
-          (Predicate "relates-to-aging")
+          pred
           (Variable "$h"))
         ;; Premises
         (Evaluation
-          (Predicate "relates-to-aging")
+          pred
           (Variable "$g"))
         (IntensionalSimilarity
           (Variable "$g")
@@ -53,4 +55,4 @@
 (define similar-genes-relating-to-aging-rule-name
   (DefinedSchemaNode "similar-genes-relating-to-aging-rule"))
 (DefineLink similar-genes-relating-to-aging-rule-name
-  similar-genes-relating-to-aging-rule)
+  (gen-similar-genes-relating-to-aging-rule (Predicate "relates-to-aging")))
