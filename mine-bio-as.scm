@@ -65,11 +65,28 @@
 (ure-logger-set-level! "debug")
 (ure-logger-set-filename! log-filename)
 
+;; ;; Load preprocessed KBs, get the list of trees to mine
+;; (define db-lst (load-kbs (list "kbs/smpdb_gene.scm"
+;;                                "kbs/GO.scm"
+;;                                "kbs/GO_annotation.scm")
+;;                          #:subsmp ss))
+
 ;; Load preprocessed KBs, get the list of trees to mine
-(define db-lst (load-kbs (list "kbs/smpdb_gene.scm"
-                               "kbs/GO.scm"
-                               "kbs/GO_annotation.scm")
-                         #:subsmp ss))
+;; (define db-lst (load-kbs (list "kbs/agingSwitchSymbols2/biogrid.scm"
+;;                                ;; "kbs/agingSwitchSymbols2/gene-go.scm"
+;;                                ;; "kbs/agingSwitchSymbols2/gene-pathway.scm"
+;;                                ;; "kbs/agingSwitchSymbols2/main.scm"
+;;                                ;; "kbs/agingSwitchSymbols2/mainRNA.scm")
+;;                                )
+;;                          #:subsmp ss))
+
+(define db-lst (load-kb
+                ;; "kbs/agingSwitchSymbols2/biogrid.scm"
+                ;; "kbs/agingSwitchSymbols2/gene-go.scm"
+                ;; "kbs/agingSwitchSymbols2/gene-pathway.scm"
+                ;; "kbs/agingSwitchSymbols2/main.scm"
+                "kbs/agingSwitchSymbols2/mainRNA.scm"
+                #:subsmp ss))
 
 ;; Post-process by adding extra knowledge
 (define db-lst (append db-lst (add-extra-kb)))
