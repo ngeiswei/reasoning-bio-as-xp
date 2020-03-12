@@ -15,7 +15,7 @@
 ;;   E
 ;;   F
 
-(define transfer-intensional-similarity-to-member-rule
+(define intensional-similarity-to-member-rule
   (let* ((A (Variable "$A"))
          (B (Variable "$B"))
          (E (Variable "$E"))
@@ -27,7 +27,7 @@
         (Member E A)
         (Member F B))
       (ExecutionOutputLink
-        (GroundedSchema "scm: transfer-intensional-similarity-to-member")
+        (GroundedSchema "scm: intensional-similarity-to-member")
         (List
           ;; Conclusion
           (IntensionalSimilarity E F)
@@ -37,13 +37,17 @@
             (Member E A)
             (Member F B)))))))
 
-(define (transfer-intensional-similarity-to-member conclusion . premises)
-  ;; (cog-logger-debug "transfer-intensional-similarity-to-member conclusion=~a . premises=~a"
+(define (intensional-similarity-to-member conclusion . premises)
+  ;; (cog-logger-debug "intensional-similarity-to-member conclusion=~a . premises=~a"
   ;;                   conclusion premises)
   (if (= (length premises) 2)
-      (cog-merge-hi-conf-tv! conclusion (cog-tv (car premises)))))
+      (let* ((ii (car premises))
+             (s (cog-mean ii))
+             (c (* 0.2 (cog-confidence ii)))
+             (tv (stv s c)))
+      (cog-merge-hi-conf-tv! conclusion tv))))
 
-(define transfer-intensional-similarity-to-member-rule-name
-  (DefinedSchemaNode "transfer-intensional-similarity-to-member-rule"))
-(DefineLink transfer-intensional-similarity-to-member-rule-name
-  transfer-intensional-similarity-to-member-rule)
+(define intensional-similarity-to-member-rule-name
+  (DefinedSchemaNode "intensional-similarity-to-member-rule"))
+(DefineLink intensional-similarity-to-member-rule-name
+  intensional-similarity-to-member-rule)

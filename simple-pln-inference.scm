@@ -80,8 +80,8 @@
 (pln-add-rule-by-name "intensional-similarity-direct-introduction-rule")
 (pln-load-from-path "rules/similar-genes-relating-to-aging.scm")
 (pln-add-rule-by-name "similar-genes-relating-to-aging-rule")
-(pln-load-from-path "rules/transfer-intensional-similarity-to-member.scm")
-(pln-add-rule-by-name "transfer-intensional-similarity-to-member-rule")
+(pln-load-from-path "rules/intensional-similarity-to-member.scm")
+(pln-add-rule-by-name "intensional-similarity-to-member-rule")
 
 ;; Load full kb in order to infer new genes related to aging
 (define full-db (load-kbs (list

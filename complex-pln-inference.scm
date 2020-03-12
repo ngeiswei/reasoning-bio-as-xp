@@ -4,8 +4,8 @@
 
 ;; Parameters
 (define rs 0)                           ; Random seed
-(define ss 0.01)                         ; Subsampled portion of the KBs
-(define mi 100000)                      ; Maximum number of iterations
+(define ss 0.2)                         ; Subsampled portion of the KBs
+(define mi 50000)                      ; Maximum number of iterations
 (define cp 1)                           ; Complexity penalty
 
 ;; Load modules
@@ -37,6 +37,7 @@
 
 ;; Load kb restricted to aging
 (define hagr-facts (load-kb "facts/hagr.scm"))
+(define cohesive-facts (load-kb "facts/expression-to-aging-cohesiveness.scm"))
 (define default-mbr-tv (stv 0.95 0.7654321))
 (map (lambda (x) (cog-set-tv! x default-mbr-tv)) hagr-facts)
 
@@ -63,8 +64,11 @@
                                  ;; its second argument is a GO category
                                  (go? (gdr x))))
 (define hagr-go-categories (map gdr (filter member-hagr-go? pp-db)))
-
 (cog-logger-debug "hagr-go-categories = ~a" hagr-go-categories)
+
+;; Take 1% of it (cause there are thousands)
+(define hagr-go-categories-ss (filter (mk-rand-selector 0.05) hagr-go-categories))
+(cog-logger-debug "hagr-go-categories-ss = ~a" hagr-go-categories-ss)
 
 ;; 3. Infer that if some gene relates to aging and is similar to
 ;;    another gene, then that one relates to aging too.
@@ -82,15 +86,14 @@
 ;;    increase or decrease with aging.
 
 ;; Load extra rules
-(pln-add-rule-by-name "intensional-similarity-direct-introduction-rule")
-(pln-load-from-path "rules/similar-genes-expression-with-aging.scm")
-(pln-add-rule-by-name "similar-genes-increase-expression-with-aging-rule")
-(pln-add-rule-by-name "similar-genes-decrease-expression-with-aging-rule")
-(pln-load-from-path "rules/transfer-intensional-similarity-to-member.scm")
-(pln-add-rule-by-name "transfer-intensional-similarity-to-member-rule")
+(pln-add-rule-by-name "intensional-similarity-direct-introduction-rule" (stv 0.4 0.2))
+(pln-load-from-path "rules/intensional-similarity-property-deduction.scm")
+(pln-add-rule-by-name "intensional-similarity-property-deduction-rule")
+(pln-load-from-path "rules/intensional-similarity-to-member.scm")
+(pln-add-rule-by-name "intensional-similarity-to-member-rule")
 
 (define trace-as (cog-new-atomspace))
-(define sources (Set hagr-go-categories))
+(define sources (Set hagr-go-categories-ss))
 (define final-results (pln-fc sources
                               #:maximum-iterations mi
                               #:complexity-penalty cp
