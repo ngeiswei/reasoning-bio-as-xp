@@ -6,9 +6,9 @@
 (use-modules (opencog logger))
 (use-modules (opencog bioscience))
 
-;; For debugging
+;; ;; For debugging
 ;; (cog-logger-set-stdout! #t)
-;; (cog-logger-set-sync! #t)
+(cog-logger-set-sync! #t)
 
 ;; Helpers
 (define (fixed-false? x) #f)
@@ -142,6 +142,8 @@
 "
   (lambda (x) (<= (cog-randgen-randfloat) prob)))
 
+;; TODO: push log messages every where to understand what causes the
+;; infinite recursion.
 (define (load-filter-in pred? filename)
 "
   1. Load filename in an auxiliaury atomspace
@@ -150,18 +152,25 @@
   4. Copy the valid atoms in the current atomspace
   5. Return the list of the copied atoms
 "
+  (cog-logger-info "load-filter-in pred?=~a" pred?)
   (let* (;; Load file in a temporary atomspace
          (base-as (cog-set-atomspace! (cog-new-atomspace)))
+         (dummy (cog-logger-info "base-as=~a" base-as))
          (dummy (load filename))
+         (dummy (cog-logger-info "dummy=~a" base-as))
 
          ;; Filter in atoms satisfying pred
          (atoms (filter pred? (cog-get-atoms 'Atom #t)))
+         (dummy (cog-logger-info "atoms=~a" atoms))
 
          ;; Copy admissible atoms in the base atomspace
          (base-atoms (cog-cp base-as atoms))
+         (dummy (cog-logger-info "base-atoms=~a" base-atoms))
 
          ;; Discard the temporary atomspace
-         (dummy (cog-set-atomspace! base-as)))
+         (dummy (cog-set-atomspace! base-as))
+         (dummy (cog-logger-info "dummy=~a" dummy)))
+    (cog-logger-info "base-atoms=~a" base-atoms)
     base-atoms))
 
 (define* (load-kb kb-filename
@@ -176,6 +185,7 @@
   An option predicate argument to filter out atoms satisfying that
   predicate.
 "
+  (cog-logger-info "load-kb kb-filename=~a" kb-filename)
   (let* (;; Define filter for admissible atoms
          (rand-selected? (mk-rand-selector subsmp))
          (eval-GO_namespace? (lambda (x) (eval-pred-name? "GO_namespace" x)))

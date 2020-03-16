@@ -71,28 +71,26 @@
 ;;                                "kbs/GO_annotation.scm")
 ;;                          #:subsmp ss))
 
-;; Load preprocessed KBs, get the list of trees to mine
+;; ;; Load preprocessed KBs, get the list of trees to mine
 ;; (define db-lst (load-kbs (list "kbs/agingSwitchSymbols2/biogrid.scm"
-;;                                ;; "kbs/agingSwitchSymbols2/gene-go.scm"
-;;                                ;; "kbs/agingSwitchSymbols2/gene-pathway.scm"
-;;                                ;; "kbs/agingSwitchSymbols2/main.scm"
-;;                                ;; "kbs/agingSwitchSymbols2/mainRNA.scm")
-;;                                )
+;;                                "kbs/agingSwitchSymbols2/gene-go.scm"
+;;                                "kbs/agingSwitchSymbols2/gene-pathway.scm"
+;;                                "kbs/agingSwitchSymbols2/main.scm"
+;;                                "kbs/agingSwitchSymbols2/mainRNA.scm")
+;;                                ;; )
 ;;                          #:subsmp ss))
 
 (define db-lst (load-kb
-                ;; "kbs/agingSwitchSymbols2/biogrid.scm"
-                ;; "kbs/agingSwitchSymbols2/gene-go.scm"
+                "kbs/agingSwitchSymbols2/biogrid.scm"
                 ;; "kbs/agingSwitchSymbols2/gene-pathway.scm"
-                ;; "kbs/agingSwitchSymbols2/main.scm"
-                "kbs/agingSwitchSymbols2/mainRNA.scm"
+                ;; "kbs/agingSwitchSymbols2/mainRNA.scm"
                 #:subsmp ss))
 
 ;; Post-process by adding extra knowledge
 (define db-lst (append db-lst (add-extra-kb)))
 
-;; ;; Debug: log BD
-;; (cog-logger-debug "db-lst:\n~a" db-lst)
+;; Debug: log BD
+(cog-logger-debug "db-lst:\n~a" db-lst)
 
 ;; Call pattern miner
 (define results (cog-mine db-lst
@@ -110,5 +108,6 @@
 (cog-logger-debug "Final results:\n~a" results)
 
 ;; Write results in a file
-(define miner-results-filename (string-append "results/mine-bio-as-results" param-str ".scm"))
+(define miner-results-filename
+  (string-append "results/mine-bio-as-results" param-str ".scm"))
 (write-atoms-to-file miner-results-filename results)
