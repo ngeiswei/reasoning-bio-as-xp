@@ -14,9 +14,9 @@ from the OpenCog github organization
 https://github.com/opencog
 ```
 
-To do that, for projects `cogutil`, `ure`, `miner` and `agi-bio` use
-the master branches of the opencog repositories. That is type the
-following:
+To do that, for projects `cogutil`, `atomspace`, `ure`, `miner`, `pln`
+and `agi-bio` use the master branches of the opencog
+repositories. That is type the following:
 
 ```bash
 git clone https://github.com/opencog/<PROJECT>.git
@@ -28,26 +28,6 @@ make -j4
 sudo make install
 sudo ldconfig /usr/local/lib/opencog
 ```
-
-For `atomspace` use the branch `bio-as-xp` from `ngeiswei`
-account. That is type the following:
-
-```
-git clone https://github.com/ngeiswei/pln.git
-cd pln
-git checkout bio-as-xp
-```
-
-then compile and install as usual.
-
-For `pln` use the branch `fix-pln-api` from `ngeiswei` account. That
-is type the following:
-
-```
-git@github.com:ngeiswei/pln.git
-```
-
-then compile and install as usual.
 
 ## Usage
 
