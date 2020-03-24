@@ -42,7 +42,7 @@
 (cog-logger-debug "(length db-lst) = ~a" (length db-lst))
 
 ;; Load PLN
-(pln-load #:rule-base 'empty)
+(pln-load 'empty)
 (pln-add-rule-by-name "intensional-inheritance-direct-introduction-rule")
 (pln-add-rule-by-name "intensional-similarity-direct-introduction-rule")
 (pln-add-rule-by-name "intensional-difference-direct-introduction-rule")

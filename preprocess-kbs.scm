@@ -118,7 +118,7 @@
 ;; 2. Infer closure of GO annotation
 
 ;; Load PLN
-(pln-load #:rule-base 'empty)
+(pln-load 'empty)
 (pln-load-from-path "rules/translation.scm")
 (pln-load-from-path "rules/transitivity.scm")
 (pln-add-rule-by-name "present-inheritance-to-subset-translation-rule")

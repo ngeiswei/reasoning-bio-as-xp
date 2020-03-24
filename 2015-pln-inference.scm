@@ -43,7 +43,7 @@
 (cog-logger-debug "(length db-lst) = ~a" (length db-lst))
 
 ;; Load PLN
-(pln-load #:rule-base 'empty)
+(pln-load 'empty)
 (pln-add-rule-by-name "subset-condition-negation-rule")
 (pln-add-rule-by-name "subset-attraction-introduction-rule")
 (pln-add-rule-by-name "intensional-inheritance-direct-introduction-rule")

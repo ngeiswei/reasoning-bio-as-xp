@@ -74,7 +74,7 @@
 ;;    another gene, then that one relates to aging too.
 
 ;; Load empty PLN 
-(pln-load #:rule-base 'empty)
+(pln-load 'empty)
 
 ;; Definitions
 (define X (Variable "$X"))

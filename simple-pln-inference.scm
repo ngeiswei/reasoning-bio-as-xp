@@ -51,7 +51,7 @@
 ;; (cog-logger-debug "aging-db = ~a" aging-db)
 
 ;; Load empty PLN
-(pln-load #:rule-base 'empty)
+(pln-load 'empty)
 
 ;; Definitions
 (define X (Variable "$X"))

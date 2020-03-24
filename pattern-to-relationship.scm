@@ -57,7 +57,7 @@
 (define all-inhs (append inhs rev-inhs))
 
 ;; Load pln rules of interest
-(pln-load #:rule-base 'empty)
+(pln-load 'empty)
 (pln-add-rule-by-name "inheritance-direct-introduction-rule")
 
 ;; For each pair infer their inheritances
