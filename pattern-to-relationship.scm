@@ -58,13 +58,13 @@
 
 ;; Load pln rules of interest
 (pln-load 'empty)
-(pln-add-rule-by-name "inheritance-direct-introduction-rule")
+(pln-add-rule-by-name "subset-direct-introduction-rule")
 
 ;; For each pair infer their inheritances
 (cog-logger-debug "main (cog-atomspace) = ~a" (cog-atomspace))
 (define all-inhs-tv (map gar (map pln-bc all-inhs)))
 
-(write-atoms-to-file "inheritance-links.scm" all-inhs-tv)
+(write-atoms-to-file "results/subset-links.scm" all-inhs-tv)
 
 ;; Get strengths (useful for looking at their distribution, see
 ;; histogram-inheritance-strengths.gp)

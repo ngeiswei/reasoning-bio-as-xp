@@ -69,7 +69,7 @@ loads a file containing mined pattern (see previous step), and
 produces a file
 
 ```
-results/inheritance-links.scm
+results/subset-links.scm
 ```
 
 containing inheritance relationships gotten by applying PLN to
@@ -118,6 +118,10 @@ Warning: not working yet
 ```bash
 guile --no-auto-compile -l 2015-pln-inference.scm
 ```
+
+## More information on the broader project
+
+https://docs.google.com/document/d/16zfY7OZtHO66mfujLdZ0-3VALXUTvxeeo4dW2ASBiNs/edit
 
 ## Related work
 
