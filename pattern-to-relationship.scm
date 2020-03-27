@@ -6,7 +6,7 @@
 (define ss 1)                         ; Subsampled portion of the KBs
 
 ;; Filename containing the mined patterns
-(define mp-filename "results/miner-results-all.scm")
+(define mp-filename "results/mine-bio-as-results-jb=1-rs=0-ss=1-mf=0.01-mi=1000-mc=4-mv=3-su=nisurp-ip=e158a724d9149eb9.scm")
 
 ;; Load modules & utils
 (use-modules (srfi srfi-1))
@@ -19,7 +19,7 @@
 (load "bio-as-utils.scm")
 
 (define log-filename
-  (string-append "opencog-pattern-to-relationship"
+  (string-append "log/opencog-pattern-to-relationship"
                  "-rs=" (number->string rs)
                  "-ss=" (number->string ss)
                  "-mp-filename=" (basename mp-filename ".scm")
