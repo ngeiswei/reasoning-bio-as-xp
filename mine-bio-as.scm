@@ -66,16 +66,24 @@
 (ure-logger-set-filename! log-filename)
 
 ;; Load preprocessed KBs, get the list of trees to mine
+(define (pred-in? x) (cog-link? x))
+(define (pred-out? x) (or
+			(lst? x)
+			(and? x)
+			(present? x)
+			(eval-GO_namespace? x)))
 (define db-lst (load-kbs (list "kbs/smpdb_gene.scm"
                                "kbs/GO.scm"
                                "kbs/GO_annotation.scm")
-                         #:subsmp ss))
+                         #:subsmp ss
+			 #:filter-in pred-in?
+			 #:filter-out pred-out?))
 
 ;; Post-process by adding extra knowledge
-(define db-lst (append db-lst (add-extra-kb)))
+(define db-lst (append db-lst (add-extra-smp-go-terms)))
 
-;; ;; Debug: log BD
-;; (cog-logger-debug "db-lst:\n~a" db-lst)
+;; Debug: log BD
+(cog-logger-debug "db-lst:\n~a" db-lst)
 
 ;; Call pattern miner
 (define results (cog-mine db-lst

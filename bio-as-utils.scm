@@ -11,7 +11,9 @@
 ;; (cog-logger-set-sync! #t)
 
 ;; Helpers
-(define (fixed-false? x) #f)
+(define (true-predicate x) #t)
+
+(define (false-predicate x) #f)
 
 (define (null-mean? x)
   (and (cog-atom? x) (< (cog-mean x) 1e-16)))
@@ -42,6 +44,9 @@
 (define (eval-pred-name? name x)
   (and (eval? x)
        (equal? (cog-name (gar x)) name)))
+
+(define (eval-GO_namespace? x)
+  (eval-pred-name? "GO_namespace" x))
 
 (define (member? x)
   (cog-subtype? 'MemberLink (cog-type x)))
@@ -142,20 +147,23 @@
 "
   (lambda (x) (<= (cog-randgen-randfloat) prob)))
 
-(define (load-filter-in pred? filename)
+(define (load-filter-in pred-in? filename)
 "
   1. Load filename in an auxiliaury atomspace
   2. Grab all atoms
-  3. Only retain the valid ones according to pred
+  3. Only retain the valid ones according to pred-in?
   4. Copy the valid atoms in the current atomspace
   5. Return the list of the copied atoms
+
+  An auxiliary atomspace is used to avoid deleting atoms, which can be
+  quite costly.
 "
   (let* (;; Load file in a temporary atomspace
          (base-as (cog-set-atomspace! (cog-new-atomspace)))
          (dummy (load filename))
 
          ;; Filter in atoms satisfying pred
-         (atoms (filter pred? (cog-get-atoms 'Atom #t)))
+         (atoms (filter pred-in? (cog-get-atoms 'Atom #t)))
 
          ;; Copy admissible atoms in the base atomspace
          (base-atoms (cog-cp base-as atoms))
@@ -167,39 +175,80 @@
 (define* (load-kb kb-filename
                   #:key
                   (subsmp 1)
-                  (filter-out fixed-false?))
+                  (filter-in true-predicate)
+		  (filter-out false-predicate))
 "
-  1. Load the given dataset.
-  2. Remove useless atoms for mining.
-  3. Add useful atoms (such as SMP classes)
+  Load knowledge base, optionally perform some filtering and return
+  a list of all atoms (not just root atoms) loaded.
 
-  An option predicate argument to filter out atoms satisfying that
-  predicate.
+  Note that filters only affect root atoms as far as their
+  belonging to the atomspace is concerned, however they affect
+  all atoms as far as their belonging to the resulting list is
+  concerned. TODO: maybe we want to return only roots, though
+  that might be undesirable if the list is passed as db to the
+  pattern miner and we want to mine subgraphs.
+
+  Usage: (load-kb kb-filename
+                  #:subsmp ssp
+                  #:filter-in pred-in?
+                  #:filter-out pred-out?)
+
+  kb-filename: Scheme file containing the knowledge base.
+
+  ssp [optional, default=1]: Probability of randomly retaining
+  atoms.
+
+  pred-in? [optional, default=true-predicate]: Predicate that
+  atoms must satisfy in order to be retained.
+
+  pred-out? [optional, default=false-predicate]: Predicate that
+  atoms must contradict in order to be retained.
 "
   (let* (;; Define filter for admissible atoms
          (rand-selected? (mk-rand-selector subsmp))
-         (eval-GO_namespace? (lambda (x) (eval-pred-name? "GO_namespace" x)))
          (admissible? (lambda (x) (and
-                                    (rand-selected? x)
-                                    (cog-link? x)
-                                    (not (scope? x))
-                                    (not (lst? x))
-                                    (not (and? x))
-                                    (not (present? x))
-                                    (not (eval-GO_namespace? x))
-                                    (not (filter-out x))))))
+				    (rand-selected? x)
+				    (filter-in x)
+				    (not (filter-out x))))))
     (load-filter-in admissible? kb-filename)))
 
 (define* (load-kbs kbs-filenames
                    #:key
                    (subsmp 1)
-                   (filter-out fixed-false?))
+		   (filter-in true-predicate)
+                   (filter-out false-predicate))
+"
+  Like load-kb but takes a list of filenames.
+
+  Note that filters only affect root atoms as far as their
+  belonging to the atomspace is concerned, however they affect
+  all atoms as far as their belonging to the resulting list is
+  concerned. TODO: maybe we want to return only roots, though
+  that might be undesirable if the list is passed as db to the
+  pattern miner and we want to mine subgraphs.
+
+  Usage: (load-kbs kb-filenames
+                   #:subsmp ssp
+                   #:filter-in pred-in?
+                   #:filter-out pred-out?)
+
+  kb-filenames: Scheme list of files containing knowledge bases.
+
+  ssp [optional, default=1]: Probability of randomly retaining atoms.
+
+  pred-in? [optional, default=true-predicate]: Predicate that atoms
+  must satisfy in order to be retained.
+
+  pred-out? [optional, default=false-predicate]: Predicate that atoms
+  must contradict in order to be retained.
+"
   (concatenate (map (lambda (x) (load-kb x
-                                         #:subsmp subsmp
+					 #:subsmp subsmp
+					 #:filter-in filter-in
                                          #:filter-out filter-out))
                     kbs-filenames)))
 
-(define (add-extra-kb)
+(define (add-extra-smp-go-terms)
   ;; Small Molecule Pathway concept
   (let* ((smps (get-smps))
          (smp-cpt (Concept "SMP_term"))
