@@ -38,8 +38,8 @@ project, type the following
 
 ```bash
 cd kbs
-wget https://mozi.ai/datasets/gene-level-dataset.tar.gz
-tar xvzf gene-level-dataset.tar.gz
+wget https://mozi.ai/datasets/gene-level-dataset_2020-04-01.tar.gz
+tar xvzf gene-level-dataset_2020-04-01.tar.gz
 cd ..
 ```
 
@@ -99,7 +99,11 @@ which should create
 results/intentional-reasoning-test-<PARAMETERS>.scm
 ```
 
-### Simple PLN reasoning example
+#### Simple PLN reasoning example
+
+A simple reasoning example to infer that some genes likely relate to
+aging due being intensionally similar to other genes that are known to
+relate to aging.
 
 ```bash
 guile --no-auto-compile -l simple-pln-inference.scm
@@ -111,12 +115,19 @@ which should create
 results/simple-pln-inference-<PARAMETERS>.scm
 ```
 
-#### Run 2015 PLN with intensional reasoning
+#### Complex (or rather less simple) PLN reasoning example
 
-Warning: not working yet
+Like above but replace "relate to aging" by gene increase or decrease
+with aging.
 
 ```bash
-guile --no-auto-compile -l 2015-pln-inference.scm
+guile --no-auto-compile -l complex-pln-inference.scm
+```
+
+which should create
+
+```
+results/complex-pln-inference-<PARAMETERS>.scm
 ```
 
 ## More information on the broader project
