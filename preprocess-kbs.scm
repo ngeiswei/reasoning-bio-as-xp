@@ -72,6 +72,8 @@
 (define fra #t)                          ; Whether rules are fully applied
 
 ;; Load modules
+(use-modules (opencog))
+(use-modules (opencog exec))
 (use-modules (opencog randgen))
 (use-modules (opencog logger))
 (use-modules (opencog ure))

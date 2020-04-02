@@ -10,6 +10,8 @@
 
 ;; Load modules & utils
 (use-modules (srfi srfi-1))
+(use-modules (opencog))
+(use-modules (opencog exec))
 (use-modules (opencog randgen))
 (use-modules (opencog logger))
 (use-modules (opencog ure))

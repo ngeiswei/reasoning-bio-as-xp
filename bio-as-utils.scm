@@ -2,6 +2,8 @@
 
 ;; Load modules
 (use-modules (srfi srfi-1))
+(use-modules (opencog))
+(use-modules (opencog exec))
 (use-modules (opencog ure))
 (use-modules (opencog logger))
 (use-modules (opencog bioscience))
