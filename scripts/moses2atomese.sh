@@ -181,7 +181,8 @@ moses2atomese() {
     links=$(echo $model_str | \
         sed -e 's/or(/(OrLink /g' \
             -e 's/and(/(AndLink /g' \
-            -e 's/\([\$XMT{0-9}]\+[.:]\+[0-9]\+_[ATCG][.\/][ATCG][_h]*\)/(PredicateNode \"\1\")/g')
+            -e 's/\([\$XMT{0-9}]\+[.:]\+[0-9]\+_[ATCG][.\/][ATCG][_h]*\)/(PredicateNode \"\1\")/g' \
+            -e 's/\([\$ENSG{0-9}]\+[.]\+[0-9]\+\)/(PredicateNode \"\1\")/g')
 
     # Seems easier to handle the NotLinks separately after the above
     links=$(echo $links | sed -e 's/!\([^)]*\)/(NotLink \1)/g')
