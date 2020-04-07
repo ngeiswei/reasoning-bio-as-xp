@@ -54,7 +54,7 @@
 
 ;; Load full kb in order to infer new genes related to aging
 (define pp-db (load-kbs (list
-                         "results/preprocess-kbs-rs=0-ss=1-mi=12-cp=10-fra=t-old.scm")
+                         "results/preprocess-kbs-rs=0-ss=1-mi=12-cp=10-fra=t.scm")
                         #:subsmp ss))
 
 ;; TODO

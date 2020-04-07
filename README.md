@@ -38,8 +38,8 @@ project, type the following
 
 ```bash
 cd kbs
-wget https://mozi.ai/datasets/gene-level-dataset_2020-04-01.tar.gz
-tar xvzf gene-level-dataset_2020-04-01.tar.gz
+wget https://mozi.ai/datasets/gene-level-dataset_2020-04-03.tar.gz
+tar xvzf gene-level-dataset_2020-04-03.tar.gz
 cd ..
 ```
 
