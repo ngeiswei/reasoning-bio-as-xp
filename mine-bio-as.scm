@@ -72,7 +72,7 @@
 			(and? x)
 			(present? x)
 			(eval-GO_namespace? x)))
-(define db-lst (load-kbs (list "kbs/smpdb_gene_2020-04-01.scm"
+(define db-lst (load-kbs (list "kbs/smpdb_gene_2020-04-03.scm"
                                "kbs/GO_2020-04-01.scm"
                                "kbs/GO_annotation_gene-level_2020-04-01.scm")
                          #:subsmp ss
