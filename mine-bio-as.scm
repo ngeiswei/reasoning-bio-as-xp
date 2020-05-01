@@ -14,9 +14,15 @@
 (define mc 4)                           ; Maximum number of conjuncts
 (define mv 3)                           ; Maximum number of variables
 (define su 'nisurp)                       ; Surprisingness measure
+(define dbr 0.4)			  ; db-ratio to control effort
+					  ; spent in the calculation
+					  ; of the empirical
+					  ; probability during
+					  ; surprisingness measure
 
 ;; Define initial pattern. Look for SMP and GO classes that have
 ;; surprisingly common genes.
+(use-modules (opencog))			; Required to define initial pattern
 (define ip (Lambda
              (VariableSet
                (Variable "$Gene")
@@ -51,6 +57,7 @@
                                  "-mc=" (number->string mc)
                                  "-mv=" (number->string mv)
                                  "-su=" (symbol->string su)
+				 "-dbr=" (number->string dbr)
                                  "-ip=" (number->hexstr (cog-handle ip))))
 
 ;; Set loggers
@@ -96,6 +103,7 @@
                           #:maximum-variables mv
                           #:maximum-spcial-conjuncts 4
                           #:surprisingness su
+			  #:db-ratio dbr
                           #:initial-pattern ip))
 
 (cog-logger-debug "Final results:\n~a" results)
