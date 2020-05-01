@@ -14,7 +14,7 @@
 (define mc 4)                           ; Maximum number of conjuncts
 (define mv 3)                           ; Maximum number of variables
 (define su 'nisurp)                       ; Surprisingness measure
-(define dbr 0.4)			  ; db-ratio to control effort
+(define dbr 0.6)			  ; db-ratio to control effort
 					  ; spent in the calculation
 					  ; of the empirical
 					  ; probability during
