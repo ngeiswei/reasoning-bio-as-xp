@@ -61,8 +61,8 @@ increases with `db-ratio`, as expected.
 
 Note that values of `db-ratio` from 0.1 to 0.5 was obtained on an
 Intel i7-6700HQ 2.60GHz, while values from 0.6 to 1.0 was obtained on
-an Intel Xeon E5-2667 v3 3.20GHz explaining the discontinuity in
-run-time between 0.5 and 0.6, the overall trend remains however.
+an Intel Xeon E5-2667 v3 3.20GHz likely explaining the counter-trend
+behavior between 0.5 and 0.6, the overall trend remains however.
 
 ### db-ratio vs warnings
 
