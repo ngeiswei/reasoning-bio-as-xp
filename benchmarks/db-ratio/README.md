@@ -108,4 +108,4 @@ there is a clear sweet-spot in term of reducing run-time while
 minimizing errors within the range of 0.4 to 0.7. Another aspect that
 was not benchmarked but is important is the reduction in RAM allowing
 the miner to be run on a 16GB machine for values of `db-ratio` of 0.5
-or below, while a value 1.0 requires 32GB of RAM.
+or below, while a value of 1.0 requires 32GB of RAM.
