@@ -99,7 +99,7 @@ technical reasons comparing the mean error was difficult (due to the
 fact that not all experiments were run on the same machine, and atoms
 had different handle IDs) but it should be noted that at glance the
 mean errors seemed fairly low, likely below 0.1 event in the worst
-case, when `db-ratio` is equal to 0.1.
+case when `db-ratio` is equal to 0.1.
 
 ## Conclusion
 
