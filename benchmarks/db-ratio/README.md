@@ -104,5 +104,5 @@ case when `db-ratio` is equal to 0.1.
 ## Conclusion
 
 Overall the `db-ratio` parameter is doing what it was designed for and
-there is a clear sweet-spot, in term of reducing run-time while
+there is a clear sweet-spot in term of reducing run-time while
 minimizing errors within the range of 0.4 to 0.7.
