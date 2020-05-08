@@ -105,4 +105,7 @@ case when `db-ratio` is equal to 0.1.
 
 Overall the `db-ratio` parameter is doing what it was designed for and
 there is a clear sweet-spot in term of reducing run-time while
-minimizing errors within the range of 0.4 to 0.7.
+minimizing errors within the range of 0.4 to 0.7. Another aspect that
+was not benchmarked but is important is the reduction in RAM allowing
+the miner to be run on 16GB for values of `db-ratio` of 0.5 or below,
+while a value 1.0 requires 32GB of RAM.
