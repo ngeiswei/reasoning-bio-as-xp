@@ -1,4 +1,4 @@
-# Benchmark pattern miner w.r.t. db-ratio
+# Benchmarking pattern miner with respect to db-ratio
 
 ## Overview
 
