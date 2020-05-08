@@ -100,3 +100,9 @@ fact that not all experiments were run on the same machine, and atoms
 had different handle IDs) but it should be noted that at cursory
 reading the mean errors seem fairly low, likely below 0.1 event in the
 worst case, when `db-ratio` is equal to 0.1.
+
+## Conclusion
+
+Overall the `db-ratio` parameter is doing what it was designed for and
+there is a clear sweet-spot, in term of reducing run-time while
+minimizing errors within the range of 0.4 to 0.6. 
