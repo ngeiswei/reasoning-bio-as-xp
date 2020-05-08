@@ -105,4 +105,4 @@ worst case, when `db-ratio` is equal to 0.1.
 
 Overall the `db-ratio` parameter is doing what it was designed for and
 there is a clear sweet-spot, in term of reducing run-time while
-minimizing errors within the range of 0.4 to 0.6. 
+minimizing errors within the range of 0.4 to 0.7.
