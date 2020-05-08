@@ -97,9 +97,9 @@ However the `max-error` might be a bit misleading given that it
 considers the worst case, that of a single pattern among 133.  For
 technical reasons comparing the mean error was difficult (due to the
 fact that not all experiments were run on the same machine, and atoms
-had different handle IDs) but it should be noted that at cursory
-reading the mean errors seem fairly low, likely below 0.1 event in the
-worst case, when `db-ratio` is equal to 0.1.
+had different handle IDs) but it should be noted that at glance the
+mean errors seemed fairly low, likely below 0.1 event in the worst
+case, when `db-ratio` is equal to 0.1.
 
 ## Conclusion
 
