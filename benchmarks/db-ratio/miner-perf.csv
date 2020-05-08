@@ -1,0 +1,20 @@
+# Chart obtained by running mine-bio-as.scm while varying
+# db-ratio. Note that 1.0 to 6.0 was run on a XXX while 0.5 to 0.1 was
+# run on an Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz, explaining the
+# sudden change in run-time. The warnings column counts the number of
+# times the empirical probability was estimated to zero (which isn't
+# supposed to happen since the pattern support is above a positive
+# threshold). The max-error mesures the absolute difference between
+# surprisingness measure of any pattern between db-ratio 1.0 and any
+# db-ratio below 1.0.
+db-ratio,time,warnings,max-error
+1.0,11752,6,0
+0.9,12166,6,0.010170
+0.8,12907,11,0.020805
+0.7,7019,9,0.0014405
+0.6,6332,20,0.0058627
+0.5,7588,16,0.0072237
+0.4,7036,23,0.0072237
+0.3,8488,32,0.057766
+0.2,6419,43,0.20612
+0.1,6021,77,0.49585
