@@ -147,7 +147,9 @@
 "
   Return a random selector that is true with the given probability
 "
-  (lambda (x) (<= (cog-randgen-randfloat) prob)))
+  (lambda (x) (cond [(= prob 0.0) #f]
+                    [(= prob 1.0) #t]
+                    [else (<= (cog-randgen-randfloat) prob)])))
 
 (define (load-filter-in pred-in? filename)
 "
