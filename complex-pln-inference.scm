@@ -4,9 +4,10 @@
 
 ;; Parameters
 (define rs 0)                           ; Random seed
-(define ss 0.2)                         ; Subsampled portion of the KBs
+(define ss 1)                         ; Subsampled portion of the KBs
 (define mi 50000)                      ; Maximum number of iterations
 (define cp 1)                           ; Complexity penalty
+(define eps 100)                         ; Expansion pool size
 
 ;; Load modules
 (use-modules (opencog))
@@ -23,7 +24,8 @@
                    "-rs=" (number->string rs)
                    "-ss=" (number->string ss)
                    "-mi=" (number->string mi)
-                   "-cp=" (number->string cp)))
+                   "-cp=" (number->string cp)
+		   "-eps=" (number->string eps)))
 
 (define log-filename
   (string-append "log/complex-pln-inference" param-str ".log"))
@@ -99,7 +101,8 @@
 (define final-results (pln-fc sources
                               #:maximum-iterations mi
                               #:complexity-penalty cp
-                              #:trace-as trace-as))
+                              #:trace-as trace-as
+			      #:expansion-pool-size eps))
 
 (cog-logger-debug "final-results = ~a" final-results)
 
