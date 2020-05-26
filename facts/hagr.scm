@@ -2,12 +2,12 @@
 ; scraped from http://genomics.senescence.info/genes/microarray.php?show=4&sort=2&page=1
 
 (InheritanceLink
-    (ConceptNode "HAGR increased expression-with-aging GeneSet"
-    (ConceptNode "GeneSet")))
+    (ConceptNode "HAGR increased expression-with-aging GeneSet")
+    (ConceptNode "GeneSet"))
 
 (InheritanceLink
-    (ConceptNode "HAGR decreased expression-with-aging GeneSet"
-    (ConceptNode "GeneSet")))
+    (ConceptNode "HAGR decreased expression-with-aging GeneSet")
+    (ConceptNode "GeneSet"))
 
 (MemberLink
     (GeneNode "ADIPOR2")
