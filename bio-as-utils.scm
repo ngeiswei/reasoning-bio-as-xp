@@ -4,6 +4,7 @@
 (use-modules (srfi srfi-1))
 (use-modules (opencog))
 (use-modules (opencog exec))
+(use-modules (opencog persist-file))
 (use-modules (opencog ure))
 (use-modules (opencog logger))
 (use-modules (opencog bioscience))
@@ -164,7 +165,7 @@
 "
   (let* (;; Load file in a temporary atomspace
          (base-as (cog-set-atomspace! (cog-new-atomspace)))
-         (dummy (load filename))
+         (dummy (load-file filename))   ; Speed load using persist-file module
 
          ;; Filter in atoms satisfying pred
          (atoms (filter pred-in? (cog-get-atoms 'Atom #t)))
