@@ -48,7 +48,7 @@ cd ..
 #### Pattern miner xp
 
 ```bash
-guile --no-auto-compile -l mine-bio-as.scm
+guile -l mine-bio-as.scm
 ```
 
 should output a scheme file
@@ -62,7 +62,7 @@ containing mined patterns.
 #### Turn patterns into relationships
 
 ```bash
-guile --no-auto-compile -l pattern-to-relationship.scm
+guile -l pattern-to-relationship.scm
 ```
 
 loads a file containing mined pattern (see previous step), and
@@ -78,7 +78,7 @@ surprising patterns.
 #### Preprocess KBs
 
 ```bash
-guile --no-auto-compile -l preprocess-kbs.scm
+guile -l preprocess-kbs.scm
 ```
 
 which should create
@@ -90,7 +90,7 @@ results/preprocess-kbs-<PARAMETERS>.scm
 #### Simple intensional reasoning example
 
 ```bash
-guile --no-auto-compile -l intensional-reasoning-test.scm
+guile -l intensional-reasoning-test.scm
 ```
 
 which should create
@@ -106,7 +106,7 @@ aging due being intensionally similar to other genes that are known to
 relate to aging.
 
 ```bash
-guile --no-auto-compile -l simple-pln-inference.scm
+guile -l simple-pln-inference.scm
 ```
 
 which should create
@@ -121,7 +121,7 @@ Like above but replace "relate to aging" by gene increase or decrease
 with aging.
 
 ```bash
-guile --no-auto-compile -l complex-pln-inference.scm
+guile -l complex-pln-inference.scm
 ```
 
 which should create
