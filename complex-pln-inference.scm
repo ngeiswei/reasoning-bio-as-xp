@@ -5,7 +5,7 @@
 ;; Parameters
 (define rs 0)                           ; Random seed
 (define ss 1)                         ; Subsampled portion of the KBs
-(define mi 50000)                      ; Maximum number of iterations
+(define mi 200)                      ; Maximum number of iterations
 (define cp 1)                           ; Complexity penalty
 (define eps 100)                         ; Expansion pool size
 
