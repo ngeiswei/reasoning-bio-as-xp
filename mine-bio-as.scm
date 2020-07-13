@@ -71,6 +71,10 @@
 ;; (ure-logger-set-sync! #t)
 (ure-logger-set-level! "debug")
 (ure-logger-set-filename! log-filename)
+;; (miner-logger-set-timestamp! #f)
+;; (miner-logger-set-sync! #t)
+(miner-logger-set-level! "debug")
+(miner-logger-set-filename! log-filename)
 
 ;; Load preprocessed KBs, get the list of trees to mine
 (define (pred-in? x) (cog-link? x))
