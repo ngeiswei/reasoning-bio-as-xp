@@ -8,10 +8,10 @@
 cogutil atomspace ure miner pln agi-bio
 ```
 
-from the OpenCog github organization
+from the SingularityNET github project
 
 ```
-https://github.com/opencog
+https://github.com/singnet
 ```
 
 To do that, for projects `cogutil`, `atomspace`, `ure`, `miner`, `pln`
@@ -19,7 +19,7 @@ and `agi-bio` use the master branches of the opencog
 repositories. That is type the following:
 
 ```bash
-git clone https://github.com/opencog/<PROJECT>.git
+git clone https://github.com/singnet/<PROJECT>.git
 cd <PROJECT>
 mkdir build
 cd build
@@ -38,8 +38,8 @@ project, type the following
 
 ```bash
 cd kbs
-wget https://mozi.ai/datasets/gene-level-dataset_2020-04-03.tar.gz
-tar xvzf gene-level-dataset_2020-04-03.tar.gz
+wget https://mozi.ai/datasets/gene-level-dataset_2020-04-21.tar.gz
+tar xvzf gene-level-dataset_2020-04-21.tar.gz
 cd ..
 ```
 
