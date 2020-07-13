@@ -6,7 +6,7 @@
 (define ss 1)                         ; Subsampled portion of the KBs
 
 ;; Filename containing the mined patterns
-(define mp-filename "results/mine-bio-as-results-jb=1-rs=0-ss=1-mf=0.01-mi=1000-mc=4-mv=3-su=nisurp-ip=e158a724d9149eb9.scm")
+(define mp-filename "results/mine-bio-as-results-jb=1-rs=0-ss=1-mf=0.01-mi=1000-mc=4-mv=3-su=nisurp-dbr=0.6-ip=c89182bef2b8252a.scm")
 
 ;; Load modules & utils
 (use-modules (srfi srfi-1))
