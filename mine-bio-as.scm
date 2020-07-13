@@ -89,8 +89,8 @@
 ;; Post-process by adding extra knowledge
 (define db-lst (append db-lst (add-extra-smp-go-terms)))
 
-;; Debug: log BD
-(cog-logger-debug "db-lst:\n~a" db-lst)
+;; ;; Debug: log BD
+;; (cog-logger-debug "db-lst:\n~a" db-lst)
 
 ;; Call pattern miner
 (define results (cog-mine db-lst
