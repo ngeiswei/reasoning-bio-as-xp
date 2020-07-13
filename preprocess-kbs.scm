@@ -123,9 +123,9 @@
 (pln-load 'empty)
 (pln-load-from-path "rules/translation.scm")
 (pln-load-from-path "rules/transitivity.scm")
-(pln-add-rule-by-name "present-inheritance-to-subset-translation-rule")
-(pln-add-rule-by-name "present-subset-transitivity-rule")
-(pln-add-rule-by-name "present-mixed-member-subset-transitivity-rule")
+(pln-add-rule 'present-inheritance-to-subset-translation)
+(pln-add-rule 'present-subset-transitivity)
+(pln-add-rule 'present-mixed-member-subset-transitivity)
 
 ;; Run forward chainer
 (define vardecl (VariableSet

@@ -45,9 +45,9 @@
 
 ;; Load PLN
 (pln-load 'empty)
-(pln-add-rule-by-name "intensional-inheritance-direct-introduction-rule")
-(pln-add-rule-by-name "intensional-similarity-direct-introduction-rule")
-(pln-add-rule-by-name "intensional-difference-direct-introduction-rule")
+(pln-add-rule 'intensional-inheritance-direct-introduction)
+(pln-add-rule 'intensional-similarity-direct-introduction)
+(pln-add-rule 'intensional-difference-direct-introduction)
 
 ;; For now calculate the intensional inheritance between GO concepts
 ;; as a test.

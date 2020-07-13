@@ -90,11 +90,11 @@
 ;;    increase or decrease with aging.
 
 ;; Load extra rules
-(pln-add-rule-by-name "intensional-similarity-direct-introduction-rule" (stv 0.4 0.2))
+(pln-add-rule 'intensional-similarity-direct-introduction (stv 0.4 0.2))
 (pln-load-from-path "rules/intensional-similarity-property-deduction.scm")
-(pln-add-rule-by-name "intensional-similarity-property-deduction-rule")
+(pln-add-rule 'intensional-similarity-property-deduction)
 (pln-load-from-path "rules/intensional-similarity-to-member.scm")
-(pln-add-rule-by-name "intensional-similarity-to-member-rule")
+(pln-add-rule 'intensional-similarity-to-member)
 
 (define trace-as (cog-new-atomspace))
 (define sources (Set hagr-go-categories-ss))

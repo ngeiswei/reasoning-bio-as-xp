@@ -60,7 +60,7 @@
 
 ;; Load pln rules of interest
 (pln-load 'empty)
-(pln-add-rule-by-name "subset-direct-introduction-rule")
+(pln-add-rule 'subset-direct-introduction)
 
 ;; For each pair infer their inheritances
 (cog-logger-debug "main (cog-atomspace) = ~a" (cog-atomspace))

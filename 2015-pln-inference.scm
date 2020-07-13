@@ -46,10 +46,10 @@
 
 ;; Load PLN
 (pln-load 'empty)
-(pln-add-rule-by-name "subset-condition-negation-rule")
-(pln-add-rule-by-name "subset-attraction-introduction-rule")
-(pln-add-rule-by-name "intensional-inheritance-direct-introduction-rule")
-(pln-add-rule-by-name "intensional-similarity-direct-introduction-rule")
+(pln-add-rule 'subset-condition-negation)
+(pln-add-rule 'subset-attraction-introduction)
+(pln-add-rule 'intensional-inheritance-direct-introduction)
+(pln-add-rule 'intensional-similarity-direct-introduction)
 
 ;; For now calculate the intensional inheritance between GO concepts
 ;; as a test.

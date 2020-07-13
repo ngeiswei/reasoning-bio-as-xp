@@ -62,7 +62,7 @@
 
 ;; 1. Infer all the genes that relate to aging
 (pln-load-from-path "rules/transfer-relates-to-aging-to-member.scm")
-(pln-add-rule-by-name "transfer-relates-to-aging-to-member-rule")
+(pln-add-rule 'transfer-relates-to-aging-to-member)
 (define source (Evaluation (Predicate "relates-to-aging") X))
 (define vardecl (TypedVariable X CT))
 (define gra-results (pln-fc source
