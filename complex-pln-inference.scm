@@ -9,6 +9,9 @@
 (define cp 1)                           ; Complexity penalty
 (define eps 100)                         ; Expansion pool size
 
+(define cl "debug")                      ; Cog logger level
+(define ul "debug")                      ; URE logger level
+
 ;; Load modules
 (use-modules (opencog))
 (use-modules (opencog exec))
@@ -28,15 +31,15 @@
 		   "-eps=" (number->string eps)))
 
 (define log-filename
-  (string-append "log/complex-pln-inference" param-str ".log"))
+  (string-append "log/complex-pln-inference" param-str "-cl-" cl "-ul-" ul ".log"))
 
 ;; (cog-logger-set-timestamp! #f)
 ;; (cog-logger-set-sync! #t)
-(cog-logger-set-level! "debug")
+(cog-logger-set-level! cl)
 (cog-logger-set-filename! log-filename)
 ;; (ure-logger-set-timestamp! #f)
 ;; (ure-logger-set-sync! #t)
-(ure-logger-set-level! "debug")
+(ure-logger-set-level! ul)
 (ure-logger-set-filename! log-filename)
 
 ;; Load kb restricted to aging
