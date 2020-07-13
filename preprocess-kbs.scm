@@ -101,8 +101,8 @@
 (ure-logger-set-filename! log-filename)
 
 ;; Load KBs to reason on
-(define db-lst (load-kbs (list "kbs/GO_2020-04-01.scm"
-                               "kbs/GO_annotation_gene-level_2020-04-01.scm")
+(define db-lst (load-kbs (list "kbs/gene-level-dataset_2020-04-21/GO_2020-04-01.scm"
+                               "kbs/gene-level-dataset_2020-04-21/GO_annotation_gene-level_2020-04-01.scm")
                          #:subsmp ss
                          #:filter-out (lambda (x)
                                         (or (GO_term? x)
